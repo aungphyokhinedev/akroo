@@ -25,8 +25,6 @@ abstract class AccountModelBase with Store {
 
   
 
-  @observable
-  SummaryInfo summaryInfo;
 
  @observable
   int dateFilterDurationType;
@@ -113,13 +111,7 @@ abstract class AccountModelBase with Store {
     }
   }
 
-   @action
-  loadSummaryInfo() {
-    fetchSummaryInfo(accountCategory.id,dateFilter).then((SummaryInfo result){
-      summaryInfo = result;
-      print('summary info ${result.income} ${result.expense}');
-    });
-  }
+  
 
   @action
   Future<AccountTransaction> addTransaction(AccountTransaction transaction) {
@@ -172,36 +164,7 @@ Future<Tuple2<AccountTransactionList, Pagination>> fetchTransactionList(
   }
 }
 
-Future<SummaryInfo> fetchSummaryInfo(
-    String catId, DateFilter date) async {
 
-  if(date == null) {
- throw Exception('Date filter data is required');
-  }
-  if(catId == null){
- throw Exception('Category filter data is required');
-  }
-
-  String url = Constants.baseUrl +
-      '/summary?cid=' +
-      catId;
-  url += '&time[\$gt]=' + date.start.millisecondsSinceEpoch.toString();
-  url += '&time[\$lt]=' + date.end.millisecondsSinceEpoch.toString();
-  print('url ${url}');
-  final response = await CustomHttp.http.get(url);
-
-  print('response.statusCode ${response.statusCode}');
-  if (response.statusCode == 200) {
-    // If the call to the server was successful, parse the JSON
-    var parsedJson = json.decode(response.body);
-    var result = SummaryInfo.fromJson(parsedJson);
-    return result;
- 
-  } else {
-    // If that call was not successful, throw an error.
-    throw Exception('Failed to load category');
-  }
-}
 
 Future<AccountTransaction> postTransaction(
     AccountTransaction transaction) async {

@@ -3,6 +3,7 @@
 
 import 'package:essential/screens/home/calendar_page.dart';
 import 'package:essential/screens/home/main_page.dart';
+import 'package:essential/screens/home/prices_page.dart';
 import 'package:essential/screens/home/settings_page.dart';
 
 
@@ -18,6 +19,7 @@ class ClassBuilder {
   static void registerClasses() {
     register<MainPage>(() => MainPage());
     register<CalendarPage>(() => CalendarPage());
+    register<PricesPage>(() => PricesPage());
     register<SettingsPage>(() => SettingsPage());
 
   }

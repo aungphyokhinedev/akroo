@@ -111,6 +111,40 @@ mixin _$CommonModel on CommonModelBase, Store {
     }, _$backColorAtom, name: '${_$backColorAtom.name}_set');
   }
 
+  final _$isOnBoardedAtom = Atom(name: 'CommonModelBase.isOnBoarded');
+
+  @override
+  bool get isOnBoarded {
+    _$isOnBoardedAtom.context.enforceReadPolicy(_$isOnBoardedAtom);
+    _$isOnBoardedAtom.reportObserved();
+    return super.isOnBoarded;
+  }
+
+  @override
+  set isOnBoarded(bool value) {
+    _$isOnBoardedAtom.context.conditionallyRunInAction(() {
+      super.isOnBoarded = value;
+      _$isOnBoardedAtom.reportChanged();
+    }, _$isOnBoardedAtom, name: '${_$isOnBoardedAtom.name}_set');
+  }
+
+  final _$isLoadingAtom = Atom(name: 'CommonModelBase.isLoading');
+
+  @override
+  bool get isLoading {
+    _$isLoadingAtom.context.enforceReadPolicy(_$isLoadingAtom);
+    _$isLoadingAtom.reportObserved();
+    return super.isLoading;
+  }
+
+  @override
+  set isLoading(bool value) {
+    _$isLoadingAtom.context.conditionallyRunInAction(() {
+      super.isLoading = value;
+      _$isLoadingAtom.reportChanged();
+    }, _$isLoadingAtom, name: '${_$isLoadingAtom.name}_set');
+  }
+
   final _$observcountAtom = Atom(name: 'CommonModelBase.observcount');
 
   @override
@@ -126,6 +160,21 @@ mixin _$CommonModel on CommonModelBase, Store {
       super.observcount = value;
       _$observcountAtom.reportChanged();
     }, _$observcountAtom, name: '${_$observcountAtom.name}_set');
+  }
+
+  final _$getOnboardingDoneAsyncAction = AsyncAction('getOnboardingDone');
+
+  @override
+  Future<bool> getOnboardingDone() {
+    return _$getOnboardingDoneAsyncAction.run(() => super.getOnboardingDone());
+  }
+
+  final _$setOnboardingDoneAsyncAction = AsyncAction('setOnboardingDone');
+
+  @override
+  Future<void> setOnboardingDone(bool value) {
+    return _$setOnboardingDoneAsyncAction
+        .run(() => super.setOnboardingDone(value));
   }
 
   final _$CommonModelBaseActionController =

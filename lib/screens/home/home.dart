@@ -1,7 +1,10 @@
 
 import 'package:essential/screens/common/class_builder.dart';
+import 'package:essential/screens/home/prices_page.dart';
 import 'package:essential/widgets/inheriteddataprovider.dart';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 
 import 'calendar_page.dart';
@@ -38,6 +41,14 @@ class _HomePageState extends State<HomePage> {
         ),
         KFDrawerItem.initWithPage(
           text: Text(
+            'MARKET PRICES',
+            style: TextStyle(color: Colors.white),
+          ),
+          icon: Icon(Icons.shopping_cart, color: Colors.white),
+          page: PricesPage(),
+        ),
+        KFDrawerItem.initWithPage(
+          text: Text(
             'SETTINGS',
             style: TextStyle(color: Colors.white),
           ),
@@ -49,7 +60,8 @@ class _HomePageState extends State<HomePage> {
   }
   @override
   Widget build(BuildContext context) {
-  
+   final _applicationModel =
+        InheritedDataProvider.of(context).applicationModel;
      return  Scaffold(
       body: KFDrawer(
         controller: _drawerController,
@@ -62,15 +74,18 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
               Text(
-              "akroo",
+              "twatchat",
                       style: TextStyle(fontSize: 30.0, color: Colors.white),
                     ),
-                Text("“Love is like money... hard to find easy to lose.”",
+                Text("Time to save money.",
                 style: TextStyle(fontSize: 14.0, color: Colors.white),)    
             ],) 
           ),
         ),
-        footer: KFDrawerItem(
+        footer:
+        Observer(builder: (context) { 
+          if(_applicationModel.loginModel.isLoggedIn){
+return KFDrawerItem(
           text: Text(
             'SIGN OUT',
             style: TextStyle(color: Colors.white),
@@ -80,9 +95,16 @@ class _HomePageState extends State<HomePage> {
             color: Colors.white,
           ),
           onPressed: () {
-            
+            _applicationModel.commonModel.setOnboardingDone(null);
+            _applicationModel.loginModel.signOut();
           },
-        ),
+        );
+          }
+          else{
+            return Container();
+          }
+          
+        }),
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,

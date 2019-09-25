@@ -1,4 +1,5 @@
 import 'package:essential/utils/Languages.dart';
+import 'package:essential/widgets/gradient_background.dart';
 import 'package:essential/widgets/inheriteddataprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -45,9 +46,14 @@ class _SettingsPageState extends State<SettingsPage> {
         InheritedDataProvider.of(context).applicationModel;
      
         
-    return SafeArea(
-      child: Center(
-        child: Column(
+    return Stack(alignment: Alignment.topCenter, children: <Widget>[
+       GradientBackground(
+        color: Colors.blueGrey,
+      ),
+       SafeArea(
+      child:  Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Row(
               children: <Widget>[
@@ -58,8 +64,8 @@ class _SettingsPageState extends State<SettingsPage> {
                     color: Colors.transparent,
                     child: IconButton(
                       icon: Icon(
-                        Icons.menu,
-                        color: Colors.black,
+                        Icons.arrow_back_ios,
+                        color: Colors.white70,
                       ),
                       onPressed: widget.onMenuPressed,
                     ),
@@ -68,20 +74,30 @@ class _SettingsPageState extends State<SettingsPage> {
               ],
             ),
             Expanded(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Container(
-      color: Colors.white,
-      child: new Center(
+              child:
+                 Container(
+                padding: new EdgeInsets.all(26.0),
+
           child: new Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.start,
             children: <Widget>[
-              new Text("Please choose your language: "),
-              new Container(
-                padding: new EdgeInsets.all(16.0),
-              ),
+               Text('Settings',
+                                    style: Theme.of(context)
+                                        .textTheme
+                                        .title
+                                        .copyWith(color: Colors.white)),
+               new Text("v1.0.3",
+              style: TextStyle(
+                color:Colors.white
+              )),
+               Container(height: 30,),
+              new Text("Please choose your language: ",
+              style: TextStyle(
+                color:Colors.white
+              )),
+           
+           
              Observer(builder: (_) { 
                 _currentLng = _applicationModel.commonModel.currentLng;
                return new DropdownButton(
@@ -91,19 +107,21 @@ class _SettingsPageState extends State<SettingsPage> {
                   _applicationModel.commonModel.setLng(value);
                     //changedDropDownItem(selectedCity);
                 },
+                style: TextStyle(
+                  color: Colors.black
+                ),
               );
              })
             ],
           )
       ),
-    )
-                ],
-              ),
+    
+              
             ),
           ],
-        ),
-      ),
-    );
+        )),
+      
+     ] );
     
   }
 

@@ -1,5 +1,6 @@
 import 'package:essential/serializers/date_filter.dart';
 import 'package:essential/utils/constants.dart';
+import 'package:essential/utils/size_config.dart';
 import 'package:essential/widgets/common/transparent_button.dart';
 import 'package:essential/widgets/date_picker/date_picker.dart';
 import 'package:essential/widgets/date_picker/month_picker.dart';
@@ -42,7 +43,7 @@ class _DateDrawerState extends State<DateDrawer> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
-    
+     SizeConfig().init(context);
     final _applicationModel = InheritedDataProvider.of(context).applicationModel;
     
     
@@ -58,11 +59,11 @@ class _DateDrawerState extends State<DateDrawer> with TickerProviderStateMixin {
       sizeFactor: _animation,
       axisAlignment: -1.0,
       child: Container(
-        height: MediaQuery.of(context).size.height * 0.69,
-        margin: EdgeInsets.only(top: 0.0, bottom: 70),
+        height: SizeConfig.screenHeight ,
+        margin: EdgeInsets.only(top:SizeConfig.blockSizeVertical *  22, bottom:SizeConfig.blockSizeVertical *  4),
         alignment: Alignment.topCenter,
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 12.0),
+          padding: EdgeInsets.symmetric(horizontal:SizeConfig.blockSizeHorizontal * 2.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.end,
             children: <Widget>[
@@ -73,16 +74,24 @@ class _DateDrawerState extends State<DateDrawer> with TickerProviderStateMixin {
 onDateChange(DateTime date, int type) {
     _applicationModel.commonModel.setDateFilter(date, type); 
     _applicationModel.accountModel.setDateFilter(new DateFilter(type, date));
-    _applicationModel.accountModel.loadSummaryInfo();
+    _applicationModel.accountCategoryModel.loadSummaryInfo(
+      _applicationModel.accountModel.accountCategory.id,
+      _applicationModel.accountModel.dateFilter
+    );
   }
    
-
+              DateTime setDate = _applicationModel.commonModel.dateFilter.selectedDate;
                 if (_applicationModel.commonModel.dateFilter.durationType ==
                     Constants.timestampOptionDay) {
                   return DatePickerTimeline(
+                       dateSize: SizeConfig.blockSizeVertical * 3 ,
+                    daySize: SizeConfig.blockSizeVertical *1.3 ,
+                     monthSize: SizeConfig.blockSizeVertical *1.3 ,
                   //  dateColor: Colors.white,
                     monthColor: Colors.white54,
                     dayColor: Colors.white54,
+                    setDate: setDate,
+                    startDate: DateTime.now().add(new Duration(days:1)),
                     onDateChange: (date) {
                       // New date selected
                      
@@ -90,11 +99,16 @@ onDateChange(DateTime date, int type) {
                       print(date.day.toString());
                     },
                   );
-                } else {
+                } else { 
                   return MonthPickerTimeline(
                   //  dateColor: Colors.white70,
+                    dateSize: SizeConfig.blockSizeVertical * 3 ,
+                    daySize: SizeConfig.blockSizeVertical *1.3 ,
+                     monthSize: SizeConfig.blockSizeVertical *1.3 ,
                     monthColor: Colors.white54,
                     dayColor: Colors.white54,
+                    setDate: setDate,
+                    startDate: DateTime.now().add(new Duration(days:28)),
                     onDateChange: (date) {
                       // New date selected
                       print('date change');

@@ -60,6 +60,20 @@ mixin _$LoginModel on LoginModelBase, Store {
     }, _$loginInfoAtom, name: '${_$loginInfoAtom.name}_set');
   }
 
+  final _$signOutAsyncAction = AsyncAction('signOut');
+
+  @override
+  Future<void> signOut() {
+    return _$signOutAsyncAction.run(() => super.signOut());
+  }
+
+  final _$checkLoginAsyncAction = AsyncAction('checkLogin');
+
+  @override
+  Future<bool> checkLogin() {
+    return _$checkLoginAsyncAction.run(() => super.checkLogin());
+  }
+
   final _$loginAsyncAction = AsyncAction('login');
 
   @override

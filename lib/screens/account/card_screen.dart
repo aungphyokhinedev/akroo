@@ -9,6 +9,8 @@ import 'package:flutter_inner_drawer/inner_drawer.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
 
+import 'add_card_screen.dart';
+
 class AccountCardScreen extends StatefulWidget {
   final AccountCategory accountCategory;
   final ApplicationModel applicationModel;
@@ -155,7 +157,12 @@ class LeftMenu extends StatelessWidget {
                             await applicationModel.accountCategoryModel.updateCategory(
                                AccountCategory(monthlyLimit: value,id: accountCategory.id )
                                );
+                            
                             await applicationModel.accountModel.refreshCategoryId(accountCategory.id);
+                            await applicationModel.accountCategoryModel.refreshCategory(
+                              applicationModel.accountModel.accountCategory
+                            );
+                            
                              print('this is limit value ${value}');
                            },
                         );
@@ -206,12 +213,32 @@ class LeftMenu extends StatelessWidget {
                                AccountCategory(dailyLimit: value,id: accountCategory.id )
                                );
                                 await applicationModel.accountModel.refreshCategoryId(accountCategory.id);
+                                 await applicationModel.accountCategoryModel.refreshCategory(
+                              applicationModel.accountModel.accountCategory
+                            );
                              print('this is limit value ${value}');
                            },
                         );
                       },
                     );
                   },
+                ),
+                ListTile(
+                  title:Text('Edit Card',
+                  style: TextStyle(
+                    height: 1.1,
+                      color: Colors.white,
+                   //   fontWeight: FontWeight.w600,
+                    ),),
+                  
+                  onTap: () {
+                      Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddCardScreen(applicationModel,true),
+                      ),
+                    );
+                  }
                 ),
                 ListTile(
                   title: Text(
@@ -243,11 +270,21 @@ class LeftMenu extends StatelessWidget {
                           actions: <Widget>[
                             FlatButton(
                               child: Text(_lng['delete']),
-                              onPressed: () {
-                                applicationModel.accountCategoryModel
+                              onPressed: () async{
+                               await applicationModel.accountCategoryModel
                                     .removeCategory(accountCategory.id);
-                                applicationModel.accountCategoryModel
+                              await  applicationModel.accountCategoryModel
                                     .getCategoryList();
+                              if(applicationModel.accountCategoryModel.categories != null && 
+                              applicationModel.accountCategoryModel.categories.length > 0){
+                                     await  applicationModel.accountCategoryModel
+                                   .loadSummaryInfo(
+          
+                                     applicationModel.accountCategoryModel.categories[0].id, 
+                                     applicationModel.accountModel.dateFilter
+                                     );
+                              }
+                            
                                 Navigator.of(context).pop();
                                 Navigator.of(context).pop();
                                 Navigator.of(context).pop();

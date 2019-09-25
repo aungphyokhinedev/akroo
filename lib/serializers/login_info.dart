@@ -9,7 +9,7 @@ class LoginInfo {
   String id;
 
   LoginInfo({this.name,this.email,this.photoUrl,
-  this.providerId,this.provider,this.photo,this.id
+  this.providerId,this.provider,this.photo,this.id, 
   });
 
   factory LoginInfo.fromJson(Map<String, dynamic> json) {

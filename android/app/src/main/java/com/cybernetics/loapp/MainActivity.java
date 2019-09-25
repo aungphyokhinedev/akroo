@@ -1,4 +1,4 @@
-package com.example.loapp;
+package com.cybernetics.loapp;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;

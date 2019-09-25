@@ -26,23 +26,6 @@ mixin _$AccountModel on AccountModelBase, Store {
     }, _$accountCategoryAtom, name: '${_$accountCategoryAtom.name}_set');
   }
 
-  final _$summaryInfoAtom = Atom(name: 'AccountModelBase.summaryInfo');
-
-  @override
-  SummaryInfo get summaryInfo {
-    _$summaryInfoAtom.context.enforceReadPolicy(_$summaryInfoAtom);
-    _$summaryInfoAtom.reportObserved();
-    return super.summaryInfo;
-  }
-
-  @override
-  set summaryInfo(SummaryInfo value) {
-    _$summaryInfoAtom.context.conditionallyRunInAction(() {
-      super.summaryInfo = value;
-      _$summaryInfoAtom.reportChanged();
-    }, _$summaryInfoAtom, name: '${_$summaryInfoAtom.name}_set');
-  }
-
   final _$dateFilterDurationTypeAtom =
       Atom(name: 'AccountModelBase.dateFilterDurationType');
 
@@ -204,16 +187,6 @@ mixin _$AccountModel on AccountModelBase, Store {
     final _$actionInfo = _$AccountModelBaseActionController.startAction();
     try {
       return super.next();
-    } finally {
-      _$AccountModelBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  dynamic loadSummaryInfo() {
-    final _$actionInfo = _$AccountModelBaseActionController.startAction();
-    try {
-      return super.loadSummaryInfo();
     } finally {
       _$AccountModelBaseActionController.endAction(_$actionInfo);
     }

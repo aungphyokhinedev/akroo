@@ -5,6 +5,7 @@ import 'package:essential/utils/color_utils.dart';
 import 'package:essential/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 part 'common_model.g.dart';
@@ -38,6 +39,11 @@ abstract class CommonModelBase with Store {
   @observable
   int backColor = ColorUtils.defaultColors[0].value;
 
+  @observable
+  bool isOnBoarded;
+
+  @observable
+  bool isLoading;
 
   @action 
   void setDateFilter(DateTime value,int timeStampOption ){
@@ -66,6 +72,21 @@ abstract class CommonModelBase with Store {
   void setColor(ColorTransition color){
     animatedColor = CustomColor(color.blendedColor.hashCode);
 
+  }
+
+  @action
+  Future<bool> getOnboardingDone()async{
+    isLoading = true;
+    final prefs = await SharedPreferences.getInstance();
+    isOnBoarded = prefs.getBool('isOBDone') == true?? false;
+    isLoading = false;
+    return isOnBoarded;
+  }
+
+  @action
+   Future<void> setOnboardingDone(bool value)async{
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setBool('isOBDone', value);
   }
 
   @observable

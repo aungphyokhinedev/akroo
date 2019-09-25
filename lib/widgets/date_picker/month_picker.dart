@@ -1,4 +1,5 @@
 
+import 'package:essential/utils/size_config.dart';
 import 'package:essential/widgets/date_picker/tap.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -12,6 +13,7 @@ class MonthPickerTimeline extends StatefulWidget {
   double dateSize, daySize, monthSize;
   Color dateColor, monthColor, dayColor;
   Color selectionColor;
+    DateTime startDate, setDate;
   DateChangeListener onDateChange;
 
   // Creates the DatePickerTimeline Widget
@@ -24,6 +26,8 @@ class MonthPickerTimeline extends StatefulWidget {
     this.monthColor = AppColors.defaultMonthColor,
     this.dayColor = AppColors.defaultDayColor,
     this.selectionColor = AppColors.defaultSelectionColor,
+     this.setDate,
+    this.startDate,
     this.onDateChange,
   }) : super(key: key);
 
@@ -38,22 +42,22 @@ class _MonthPickerState extends State<MonthPickerTimeline> {
 
   @override
   Widget build(BuildContext context) {
-     final _applicationModel = InheritedDataProvider.of(context).applicationModel;
-   
+    // final _applicationModel = InheritedDataProvider.of(context).applicationModel;
+     SizeConfig().init(context);
     return   Observer(builder: (context) {
-      DateTime _setDate = _applicationModel.commonModel.dateFilter.selectedDate;
-DateTime _startDate = DateTime.now().add(new Duration(days: 30));
+   //   DateTime _setDate = _applicationModel.commonModel.dateFilter.selectedDate;
+//DateTime _startDate = DateTime.now().add(new Duration(days: 30));
     return Container(
-      height: 80,
+      height: SizeConfig.blockSizeVertical * 10,
       child: ListView.builder(
         itemCount: 500,
         scrollDirection: Axis.horizontal,
         itemBuilder: (context, index) {
           // Return the Date Widget
-           DateTime datenow = _startDate;
+           DateTime datenow = widget.startDate;
             DateTime date =  new DateTime(datenow.year, datenow.month - index, datenow.day);
        //   DateTime date = DateTime.now().subtract(Duration(days: index));
-          bool isSelected = compareMonth(date, _setDate);
+          bool isSelected = compareMonth(date,  widget.setDate,);
 
           return MonthWidget(
             date: date,

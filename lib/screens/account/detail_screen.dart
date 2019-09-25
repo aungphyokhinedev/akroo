@@ -4,6 +4,7 @@ import 'package:essential/serializers/task_category.dart';
 import 'package:essential/store/application_model.dart';
 import 'package:essential/utils/color_utils.dart';
 import 'package:essential/utils/constants.dart';
+import 'package:essential/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
@@ -88,6 +89,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
   bool _visible = true;
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     return Theme(
       data: ThemeData(primarySwatch: _color),
       child: Scaffold(
@@ -108,7 +110,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
             new IconButton(
               padding: EdgeInsets.only(right: 20),
               icon: new Icon(
-                Icons.arrow_forward_ios,
+                Icons.menu,
               ),
               onPressed: () {
                 widget.onDrawerPressed();
@@ -120,7 +122,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
           var items = widget.applicationModel.accountModel.items;
           var pagination = widget.applicationModel.accountModel.pagination;
           var moment = new Moment.now();
-          var _mf = new DateFormat('dd MMM yyyy');
+          var _mf = new DateFormat('ddMMMyy');
           var _df = new DateFormat('HH:mm');
           var _load = widget.applicationModel.accountModel.isLoading;
           return items.length == 0
@@ -134,14 +136,14 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
                   ],
                 ))
               : Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 8.0),
+                  padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 8.0),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
                           margin: EdgeInsets.symmetric(
                               horizontal: 20.0, vertical: 0.0),
-                          height: 100,
+                          height: 70,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.start,
@@ -186,8 +188,9 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
                         Container(),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.only(top: 16.0),
+                            padding: EdgeInsets.only(top:SizeConfig.blockSizeVertical * 1),
                             child: ListView.builder(
+
                               controller: _scrollController,
                               itemBuilder: (BuildContext context, int index) {
                                 //var todo = todoModel.todos[index];
@@ -201,7 +204,10 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
                                   actionExtentRatio: 0.25,
                                   child: new Container(
                                     color: Colors.white,
-                                    child: new ListTile(
+                                    child: 
+                                    
+                                    new ListTile(
+                                     dense: true,
                                       onLongPress: () {
                                         ClipboardManager.copyToClipBoard(
                                                 items[index].amount.toString() +
@@ -221,39 +227,49 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
                                               .showSnackBar(snackBar);
                                         });
                                       },
-                                    
+                                    leading: CircleAvatar(
+                                      radius: SizeConfig.blockSizeVertical * 2.5,
+                                      backgroundColor: 
+                                      items[index].type == Constants.transactionExpense? 
+                                      _color : Colors.grey,
+                                      child: Text('${index+1}'),
+                                      foregroundColor: Colors.white,
+                                    ),
+                                    trailing: Container(width: 0,),
                                       title: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
-                                          new Text(numberFormat
-                                              .format(items[index].amount),
-                                              style: TextStyle(
-                                                fontSize: 18,
-                                                fontWeight: FontWeight.w500,
-                                                color:
-                                              items[index].type == Constants.transactionExpense?
-                                              _color: Colors.black54 ),),
-                                          Text(_mf.format(items[index].time),
-                                          style: TextStyle(
                                          
-                                                color: Colors.black54
-                                          ))
+                                          new Text(
+                                                numberFormat
+                                              .format(items[index].amount) 
+                                         ,
+                                              style: TextStyle(
+                                                fontSize: SizeConfig.blockSizeVertical * 2.2,
+                                               fontWeight: FontWeight.w500,
+                                                color:Colors.black54
+                                              ),),
+                                       
                                         ],
                                       ),
                                       subtitle: Row(
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: <Widget>[
+                                   
                                           new Flexible(
                                               fit: FlexFit.loose,
                                               child: Text(
                                                 items[index].title,
                                                 softWrap: true,
                                                 overflow: TextOverflow.fade,
+                                                 style: TextStyle(
+                                                fontSize: SizeConfig.blockSizeVertical * 1.7,
+                                              )
                                               )),
-                                          Text(_df.format(items[index].time),
-                                          )
+                                         
+                                          
                                         ],
                                       ),
                                     ),
@@ -270,12 +286,17 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
                                       caption: 'Delete',
                                       color: Colors.red,
                                       icon: Icons.delete,
-                                      onTap: () {
-                                        widget.applicationModel.accountModel
+                                      onTap: () async {
+                                       await widget.applicationModel.accountModel
                                             .removeTransaction(items[index].id)
                                             .then((onValue) {
                                           items.removeAt(index);
                                         });
+                                     
+                                        await widget.applicationModel.accountCategoryModel.loadSummaryInfo(
+                                          widget.applicationModel.accountModel.accountCategory.id,
+                                          widget.applicationModel.accountModel.dateFilter
+                                        );
                                       },
                                     ),
                                   ],

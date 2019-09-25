@@ -1,9 +1,12 @@
+import 'dart:async';
+
 import 'package:essential/serializers/account_category.dart';
 import 'package:essential/serializers/date_filter.dart';
 
 import 'package:essential/store/application_model.dart';
 import 'package:essential/utils/color_utils.dart';
 import 'package:essential/utils/constants.dart';
+import 'package:essential/utils/size_config.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 
 import 'package:flutter/material.dart';
@@ -13,6 +16,10 @@ import '../inheriteddataprovider.dart';
 import 'card.dart';
 
 class AccountCards extends StatefulWidget {
+   final ApplicationModel applicationModel;
+   AccountCards({
+    @required this.applicationModel,
+  });
   @override
   _AccountCardsState createState() => _AccountCardsState();
 }
@@ -21,7 +28,8 @@ class _AccountCardsState extends State<AccountCards>
     with TickerProviderStateMixin {
   AnimationController _controller;
   Animation<double> _animation;
-  PageController _pageController;
+  PageController _pageController = PageController(
+     viewportFraction: 0.8,initialPage: 0, keepPage: true);
 
   final List<ReactionDisposer> _disposers = [];
 
@@ -39,47 +47,63 @@ class _AccountCardsState extends State<AccountCards>
       parent: _controller,
       curve: Curves.easeIn,
     );
-
-    _pageController = PageController(
-      viewportFraction: 0.8,
-    );
-     
+    if(widget.applicationModel.accountCategoryModel.categories != null){
+      refreshCategory(widget.applicationModel,
+      widget.applicationModel.accountCategoryModel.categories[0]);
+    }
+    print('init system account ..... ()');
   }
-
-    
-    
 
   refreshCategory(ApplicationModel applicationModel, AccountCategory category) {
     applicationModel.accountModel.setCategory(category);
-  //  DateFilter dateFilter = applicationModel.commonModel.dateFilter;
-    applicationModel.accountModel.setDateFilter(applicationModel.commonModel.dateFilter);
-    applicationModel.accountModel.loadSummaryInfo();
+    //  DateFilter dateFilter = applicationModel.commonModel.dateFilter;
+    applicationModel.accountModel
+        .setDateFilter(applicationModel.commonModel.dateFilter);
+    applicationModel.accountCategoryModel.loadSummaryInfo(
+        category.id,applicationModel.commonModel.dateFilter
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    
+    SizeConfig().init(context);
 
     print('todo widget build');
     final _applicationModel =
         InheritedDataProvider.of(context).applicationModel;
-    
-    _disposers.add(reaction((_) => _applicationModel.commonModel.dateFilter,
-        (msg) {
-          refreshCategory(_applicationModel,_applicationModel.accountModel.accountCategory);
-        }));
-       
+
+    _disposers
+        .add(reaction((_) => _applicationModel.commonModel.dateFilter, (msg) {
+      refreshCategory(
+          _applicationModel, _applicationModel.accountModel.accountCategory);
+    }));
+
     _disposers.add(reaction(
         (_) => _applicationModel.loginModel.isLoggedIn,
-        (onboarded) =>
-            onboarded ? _controller.forward() : _controller.reverse()));
-     _applicationModel.loginModel.isLoggedIn? _controller.forward() : _controller.reverse();
+        (isLoggedIn){
+          if(isLoggedIn){
+            _controller.forward();
+            widget.applicationModel.accountCategoryModel.getCategoryList();
+          }
+          else{
+            _controller.reverse();
+          }
+        }
+            ));
+    _applicationModel.loginModel.isLoggedIn
+        ? _controller.forward()
+        : _controller.reverse();
+
+      
+
     /// scroll position
     _pageController.addListener(() {
       _applicationModel.commonModel.setScrollPosition(
         _pageController.offset / _pageController.position.maxScrollExtent,
       );
     });
+
+  
 
     return Container(
       alignment: Alignment.bottomRight,
@@ -90,59 +114,51 @@ class _AccountCardsState extends State<AccountCards>
         child: Container(
           alignment: Alignment.bottomCenter,
           child: Container(
-              padding: EdgeInsets.only(top: 0.0, bottom: 100.0),
-              height: MediaQuery.of(context).size.height * .70,
+              padding: EdgeInsets.only(
+                  top: SizeConfig.blockSizeVertical * 32,
+                  bottom: SizeConfig.blockSizeVertical * 7.0),
+              height: SizeConfig.screenHeight,
               child: Observer(builder: (context) {
-                if (_applicationModel.accountCategoryModel.categories == null ||_applicationModel.accountCategoryModel.categories.status ==
-                    FutureStatus.pending) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (_applicationModel.accountCategoryModel.categories.status ==
-                    FutureStatus.fulfilled) {
+                List<AccountCategory> data =
+                    _applicationModel.accountCategoryModel.categories;
 
-                      print('fufilled');
-                  List<AccountCategory> data =
-                      _applicationModel.accountCategoryModel.categories.result;
-
-                   //adding add new card 
-                  if (data.where((d) => d.isAdd).length == 0) {
-                    data.add(new AccountCategory(
-                        name: "",
-                        color: ColorUtils.defaultColors[0].value,
-                        id: "",
-                        isAdd: true,
-                        logo: Icons.work.codePoint));
-                  }
-    
-                  if (_applicationModel.accountModel.accountCategory == null){
-                    refreshCategory(_applicationModel, data[0]);
-                  }
-
-                 
-
-                  onPagechange(index) {
-                     refreshCategory(_applicationModel, data[index]);
-                    _applicationModel.commonModel
-                        .setBackColor(data[index].color);
-         
-                  }
-
-                  return PageView(
-                    controller: _pageController,
-                    onPageChanged: onPagechange,
-                    children: data
-                        .map((category) => BuildCategory(
-                              category: category,
-                              applicationModel: _applicationModel,
-                            ))
-                        .toList(),
-                  );
-                } else {
-                  return Center(
-                    child: Text('Error'),
-                  );
+                if (_applicationModel.accountCategoryModel.isLoading ||
+                    data == null) {
+                  return Container();
                 }
+
+                //adding add new card
+                if (data.where((d) => d.isAdd).length == 0) {
+                  data.add(new AccountCategory(
+                      name: "",
+                      color: ColorUtils.defaultColors[0].value,
+                      id: "",
+                      isAdd: true,
+                      logo: Icons.work.codePoint));
+                }
+
+                if (_applicationModel.accountModel.accountCategory == null) {
+                  refreshCategory(_applicationModel, data[0]);
+                }
+
+               
+
+                onPagechange(index) {
+           
+                  refreshCategory(_applicationModel, data[index]);
+                  _applicationModel.commonModel.setBackColor(data[index].color);
+                }
+
+                return PageView(
+                  controller: _pageController,
+                  onPageChanged: onPagechange,
+                  children: data
+                      .map((category) => BuildCategory(
+                            category: category,
+                            applicationModel: _applicationModel,
+                          ))
+                      .toList(),
+                );
               })),
         ),
       ),
@@ -172,5 +188,3 @@ class BuildCategory extends StatelessWidget {
     );
   }
 }
-
-

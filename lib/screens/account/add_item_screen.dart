@@ -3,6 +3,7 @@ import 'package:essential/serializers/account_transaction.dart';
 import 'package:essential/store/application_model.dart';
 import 'package:essential/utils/color_utils.dart';
 import 'package:essential/utils/constants.dart';
+import 'package:essential/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -41,6 +42,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   
   @override
   Widget build(BuildContext context) {
+    SizeConfig().init(context);
     var yearFormatter = new DateFormat('MMMM yyy');
     var dateFormatter = new DateFormat('dd EE');
     var timeFormatter = new DateFormat('hh:mm');
@@ -67,11 +69,19 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
       key: _scaffoldKey,
       backgroundColor: Colors.white,
       appBar: AppBar(
+        leading: new IconButton(
+            padding: EdgeInsets.only(left: 0),
+            icon: new Icon(
+              Icons.arrow_back_ios,
+            ),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
         title:
         Observer(builder: (context) {
           return Text(
           widget.applicationModel.commonModel.lng['add_new'],
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Colors.black,
+            fontSize:  SizeConfig.blockSizeVertical * 2.5),
         );
         }),
         centerTitle: true,
@@ -80,18 +90,19 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
         brightness: Brightness.light,
         backgroundColor: Colors.white,
       ),
-      body: Container(
+      body:
+       Container(
         constraints: BoxConstraints.expand(),
-        padding: EdgeInsets.symmetric(horizontal: 36.0, vertical: 36.0),
+        padding: EdgeInsets.symmetric(horizontal:  SizeConfig.blockSizeVertical * 2.5, vertical:  SizeConfig.blockSizeVertical * 2.5),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'What task are you planning to perfrom?',
+              'What transaction are you planning to add?',
               style: TextStyle(
                   color: Colors.black38,
                   fontWeight: FontWeight.w600,
-                  fontSize: 16.0),
+                  fontSize:  SizeConfig.blockSizeVertical * 2.3),
             ),
              Container(
               height: 16.0,
@@ -110,14 +121,15 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
   Text('${yearFormatter.format(newTransaction.time)}',
                    style: TextStyle(
                   color: Colors.black38,
-                 // fontWeight: FontWeight.w500,
-                  fontSize: 16.0)
+                  fontWeight: FontWeight.w500,
+                  fontSize:  SizeConfig.blockSizeVertical * 2.3)
                   ),
                     Text('${dateFormatter.format(newTransaction.time)}',
                    style: TextStyle(
                   color: Colors.black38,
-                //  fontWeight: FontWeight.w500,
-                  fontSize: 16.0)
+                   fontWeight: FontWeight.w500,
+                  fontSize:  SizeConfig.blockSizeVertical * 2.3,
+                )
                   )
                   ],)
                   
@@ -150,8 +162,8 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                   child: Text('${timeFormatter.format(newTransaction.time)}',
                    style: TextStyle(
                   color: Colors.black38,
-                 // fontWeight: FontWeight.w500,
-                  fontSize:16.0)),
+                  fontWeight: FontWeight.w500,
+                  fontSize: SizeConfig.blockSizeVertical * 2.3)),
                   onTap: () {
                     DatePicker.showTimePicker(context, showTitleActions: true,
                         onChanged: (date) {
@@ -197,7 +209,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
               style: TextStyle(
                   color: Colors.black54,
                   fontWeight: FontWeight.w500,
-                  fontSize: 26.0),
+                  fontSize:  SizeConfig.blockSizeVertical * 4),
             );
           }),
             
@@ -272,6 +284,10 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                     //   new TaskTodo(name:newTask, isDone: false,time: DateTime.now(), catId: widget.taskCategory.id )
                     // );
                     await widget.applicationModel.accountModel.refresh();
+                    await widget.applicationModel.accountCategoryModel.loadSummaryInfo(
+                      widget.applicationModel.accountModel.accountCategory.id,
+                      widget.applicationModel.accountModel.dateFilter
+                    );
                     // widget.todoModel.getTaskTodoList(widget.taskCategory.id);
                     Navigator.pop(context);
                   }
@@ -298,7 +314,10 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                    newTransaction.type = Constants.transactionIncome;
               await      widget.applicationModel.accountModel.addTransaction(newTransaction);
            await widget.applicationModel.accountModel.refresh();
-           await  widget.applicationModel.accountModel.loadSummaryInfo();
+           await  widget.applicationModel.accountCategoryModel.loadSummaryInfo(
+                                  widget.applicationModel.accountModel.accountCategory.id,
+                      widget.applicationModel.accountModel.dateFilter
+           );
                     //  await widget.todoModel.addTaskTodo(
                     //   new TaskTodo(name:newTask, isDone: false,time: DateTime.now(), catId: widget.taskCategory.id )
                     // );

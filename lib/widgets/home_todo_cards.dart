@@ -1,4 +1,5 @@
 
+import 'package:essential/serializers/account_category.dart';
 import 'package:essential/serializers/task_category.dart';
 import 'package:essential/utils/color_utils.dart';
 import 'package:flutter/foundation.dart';
@@ -84,22 +85,15 @@ class _TodoCardsState extends State<TodoCards> with TickerProviderStateMixin {
               padding: EdgeInsets.only(top: 36.0, bottom: 28.0),
               height: MediaQuery.of(context).size.height * .72,
               child: Observer(builder: (context) {
-                if (_applicationModel.accountCategoryModel.categories.status == FutureStatus.pending) {
-                  return Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else if (_applicationModel.accountCategoryModel.categories.status ==
-                    FutureStatus.fulfilled) {
-                  List<TaskCategory> data = _applicationModel.accountCategoryModel.categories.result;
-                  if (data.where((d) => d.isAdd).length == 0) {
-                    data.add(new TaskCategory(
+            
+                  List<AccountCategory> data = _applicationModel.accountCategoryModel.categories;
+                  var newcat = new TaskCategory(
                         name: "",
                         color: ColorUtils.defaultColors[0].value,
                         id: "",
                         isAdd: true,
-                        logo: Icons.work.codePoint));
-                  }
-                  
+                        logo: Icons.work.codePoint);
+                
                   setBackColor(index) {
                     _applicationModel.commonModel.setBackColor(data[index].color);
                   }
@@ -108,14 +102,10 @@ class _TodoCardsState extends State<TodoCards> with TickerProviderStateMixin {
                     controller: _pageController,
                     onPageChanged: setBackColor,
                     children: data
-                        .map((category) => BuildCategory(category: category))
+                        .map((category) => BuildCategory(category: newcat))
                         .toList(),
                   );
-                } else {
-                  return Center(
-                    child: Text('Error'),
-                  );
-                }
+             
               })),
         ),
       ),

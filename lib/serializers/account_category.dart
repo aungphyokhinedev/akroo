@@ -1,4 +1,6 @@
 
+import 'package:essential/serializers/summary_info.dart';
+
 class AccountCategory {
   String id;
   String name;
@@ -7,7 +9,6 @@ class AccountCategory {
   bool isAdd;
   double dailyLimit;
   double monthlyLimit;
-
 
   AccountCategory({
     this.id,

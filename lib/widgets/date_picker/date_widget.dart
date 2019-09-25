@@ -1,3 +1,4 @@
+import 'package:essential/utils/size_config.dart';
 import 'package:essential/widgets/date_picker/tap.dart';
 /// ***
 /// This class consists of the DateWidget that is used in the ListView.builder
@@ -31,15 +32,19 @@ class DateWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+         SizeConfig().init(context);
+    var _padH = SizeConfig.blockSizeHorizontal * 2;
+    var _padW = SizeConfig.blockSizeHorizontal * 4;
     return InkWell(
       child: Container(
+       
         margin: EdgeInsets.all(3.0),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(8.0)),
+          borderRadius: BorderRadius.all(Radius.circular(_padH)),
           color: selectionColor,
         ),
         child: Padding(
-          padding: const EdgeInsets.only(top: 8.0, bottom: 8.0, left: 15, right: 15),
+          padding:  EdgeInsets.only(top: _padH, bottom: _padH, left: _padW, right: _padW),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,

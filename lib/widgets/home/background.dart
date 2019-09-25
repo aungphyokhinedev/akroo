@@ -18,14 +18,17 @@ class Background extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-  final _commonmodel = InheritedDataProvider.of(context).applicationModel.commonModel;
+  final _applicationModel = InheritedDataProvider.of(context).applicationModel;
     return Stack(
       alignment: Alignment.topCenter,
       children: <Widget>[
         Observer(
           builder: (context)  {
 
-            return GradientBackground(color: ColorUtils.getColorFrom(id:_commonmodel.backColor) );
+            return 
+            _applicationModel.loginModel.isLoggedIn?
+            GradientBackground(color: ColorUtils.getColorFrom(id:_applicationModel.commonModel.backColor) ):
+            Container(color: Colors.blueGrey,);
             
           }
             
