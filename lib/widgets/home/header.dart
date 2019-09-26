@@ -58,15 +58,15 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             _Icon(),
-            Observer(
-                builder: (_) => Text(
-                      "twat check",
+             Observer(builder: (context) {
+           return Text(
+                      "twatchat",
                       style: TextStyle(
-                          fontSize: SizeConfig.blockSizeVertical * 3.5,
+                          fontSize: SizeConfig.blockSizeVertical *3.5,
                           height: 1,
                           fontWeight: FontWeight.w300,
                           color: Colors.white),
-                    )),
+                    );}),
             SizedBox(height: SizeConfig.blockSizeVertical * 2.0),
             _Button(),
           ],
@@ -86,9 +86,10 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    super.dispose();
+    
     _disposers.forEach((disposer) => disposer());
     _controller.dispose();
+    super.dispose();
   }
 }
 
@@ -171,10 +172,11 @@ class __IconState extends State<_Icon> with TickerProviderStateMixin {
               child: Observer(builder: (context) {
                 return Container(
                   height: SizeConfig.blockSizeVertical * 13.0,
+                  alignment: Alignment.bottomCenter,
                   child: !_applicationModel.loginModel.isLoggedIn
                       ? Image.asset(
                           "$assetsPath/icon.png",
-                          width: SizeConfig.blockSizeVertical * 12.0,
+                          width: SizeConfig.blockSizeVertical * 10.0,
                           colorBlendMode: BlendMode.overlay,
                         )
                       : new ClipRRect(
@@ -194,9 +196,11 @@ class __IconState extends State<_Icon> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    super.dispose();
-    _disposers.forEach((disposer) => disposer());
+   
     _controller.dispose();
+    _disposers.forEach((disposer) => disposer());
+     super.dispose();
+    
   }
 }
 
@@ -287,9 +291,10 @@ class __ButtonState extends State<_Button> with TickerProviderStateMixin {
 
   @override
   void dispose() {
-    super.dispose();
+   _controller.dispose();
     _disposers.forEach((disposer) => disposer());
-    _controller.dispose();
+    
+     super.dispose();
   }
 }
 

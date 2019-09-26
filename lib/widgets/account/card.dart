@@ -4,6 +4,7 @@ import 'package:essential/serializers/account_category.dart';
 
 import 'package:essential/store/application_model.dart';
 import 'package:essential/serializers/task_category.dart';
+import 'package:essential/store/card_model.dart';
 import 'package:essential/utils/color_utils.dart';
 import 'package:essential/utils/constants.dart';
 import 'package:essential/utils/size_config.dart';
@@ -16,7 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 
 class AccountCard extends StatefulWidget {
-  final AccountCategory category;
+  final CardModel category;
   final ApplicationModel applicationModel;
   AccountCard({Key key, this.category, this.applicationModel})
       : super(key: key);
@@ -37,6 +38,8 @@ class _AccountCardState extends State<AccountCard> {
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
+
+
     return LayoutBuilder(
         builder: (BuildContext context, BoxConstraints viewportConstraints) {
       return Container(
@@ -70,12 +73,12 @@ class _AccountCardState extends State<AccountCard> {
   }
 
   Widget buildContent(
-      AccountCategory category, ApplicationModel applicationModel) {
+      CardModel category, ApplicationModel applicationModel) {
     SizeConfig().init(context);
       
 
-    if (category.isAdd != null && category.isAdd) {
-      Color color = ColorUtils.getColorFrom(id: category.color);
+    if (category.accountCategory.isAdd != null && category.accountCategory.isAdd) {
+      Color color = ColorUtils.getColorFrom(id: category.accountCategory.color);
       return Material(
         borderRadius:
             BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4.0),
@@ -123,11 +126,11 @@ class _AccountCardState extends State<AccountCard> {
                 context,
                 MaterialPageRoute(
                     builder: (context) => AccountCardScreen(
-                        accountCategory: category,
+                        category: category,
                         applicationModel: applicationModel)));
           },
           child: Hero(
-              tag: "avatar_" + widget.category.id,
+              tag: "avatar_" + category.accountCategory.id,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -144,7 +147,7 @@ class _AccountCardState extends State<AccountCard> {
                             shape: BoxShape.circle,
                             border: Border.all(
                                 color:
-                                    ColorUtils.getColorFrom(id: category.color),
+                                    ColorUtils.getColorFrom(id: category.accountCategory.color),
                                 //  style: BorderStyle.solid,
                                 width: 0.0),
                           ),
@@ -152,11 +155,11 @@ class _AccountCardState extends State<AccountCard> {
                             padding: const EdgeInsets.all(3.0),
                             child: Icon(
                               IconData(
-                                category.logo,
+                                category.accountCategory.logo,
                                 fontFamily: 'MaterialIcons',
                               ),
                               color:
-                                  ColorUtils.getColorFrom(id: category.color),
+                                  ColorUtils.getColorFrom(id: category.accountCategory.color),
                             ),
                           ),
                         ),
@@ -165,7 +168,7 @@ class _AccountCardState extends State<AccountCard> {
                   ),
                   Observer(builder: (_) {
                     var _info =
-                        applicationModel.accountCategoryModel.summaryInfo;
+                        category.summaryInfo;
 
                     if (_info == null) {
                       return Container();
@@ -180,20 +183,16 @@ class _AccountCardState extends State<AccountCard> {
                     double _limit = 0.0;
                     if (applicationModel.commonModel.dateFilter.durationType ==
                         Constants.timestampOptionDay) {
-                      _limit = applicationModel
-                                  .accountModel.accountCategory.dailyLimit !=
+                      _limit = category.accountCategory.dailyLimit !=
                               null
-                          ? applicationModel
-                              .accountModel.accountCategory.dailyLimit
+                          ? category.accountCategory.dailyLimit
                           : 0.0;
                     } else if (applicationModel
                             .commonModel.dateFilter.durationType ==
                         Constants.timestampOptionMonth) {
-                      _limit = applicationModel
-                                  .accountModel.accountCategory.monthlyLimit !=
+                      _limit = category.accountCategory.monthlyLimit !=
                               null
-                          ? applicationModel
-                              .accountModel.accountCategory.monthlyLimit
+                          ? category.accountCategory.monthlyLimit
                           : 0.0;
                     }
 
@@ -210,7 +209,7 @@ class _AccountCardState extends State<AccountCard> {
                                         ? _info.expense / _limit * 100
                                         : 0.0,
                                     color: ColorUtils.getColorFrom(
-                                        id: category.color)),
+                                        id: category.accountCategory.color)),
                                 Center(
                                     child: Column(
                                   children: <Widget>[
@@ -249,22 +248,18 @@ class _AccountCardState extends State<AccountCard> {
                         Constants.timestampOptionDay) {
                       var _df = new DateFormat('MMM dd');
                       _limitStr = _df.format(_date) + ", ";
-                      _limit = applicationModel
-                                  .accountModel.accountCategory.dailyLimit !=
+                      _limit = category.accountCategory.dailyLimit !=
                               null
-                          ? applicationModel
-                              .accountModel.accountCategory.dailyLimit
+                          ? category.accountCategory.dailyLimit
                           : 0.0;
                     } else if (applicationModel
                             .commonModel.dateFilter.durationType ==
                         Constants.timestampOptionMonth) {
                       var _df = new DateFormat('yyyy MMM');
                       _limitStr = _df.format(_date) + ", ";
-                      _limit = applicationModel
-                                  .accountModel.accountCategory.monthlyLimit !=
+                      _limit = category.accountCategory.monthlyLimit !=
                               null
-                          ? applicationModel
-                              .accountModel.accountCategory.monthlyLimit
+                          ? category.accountCategory.monthlyLimit
                           : 0.0;
                     }
 
@@ -276,7 +271,7 @@ class _AccountCardState extends State<AccountCard> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          category.name,
+                          category.accountCategory.name,
                           style: TextStyle(
                               height: 1,
                               fontSize: SizeConfig.blockSizeVertical * 3.0,

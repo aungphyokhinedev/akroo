@@ -2,6 +2,7 @@ import 'package:essential/screens/account/detail_screen.dart';
 import 'package:essential/serializers/account_category.dart';
 import 'package:essential/serializers/task_category.dart';
 import 'package:essential/store/application_model.dart';
+import 'package:essential/store/card_model.dart';
 import 'package:essential/utils/color_utils.dart';
 import 'package:essential/widgets/common/value_input_dialogue.dart';
 import 'package:flutter/material.dart';
@@ -12,10 +13,10 @@ import 'package:intl/intl.dart';
 import 'add_card_screen.dart';
 
 class AccountCardScreen extends StatefulWidget {
-  final AccountCategory accountCategory;
+  final CardModel category;
   final ApplicationModel applicationModel;
   AccountCardScreen({
-    @required this.accountCategory,
+    @required this.category,
     @required this.applicationModel,
   });
 
@@ -32,6 +33,7 @@ class _AccountCardScreenState extends State<AccountCardScreen>
 
   @override
   void initState() {
+    print('init card screen');
     super.initState();
   }
 
@@ -49,7 +51,7 @@ class _AccountCardScreenState extends State<AccountCardScreen>
         rightAnimationType: InnerDrawerAnimation.quadratic, // default static
         // at least one child is required
         rightChild: LeftMenu(
-            accountCategory: widget.accountCategory,
+            category: widget.category,
             applicationModel: widget.applicationModel,
             onDrawerBackPressed: (){
                 _innerDrawerKey.currentState.toggle(
@@ -62,7 +64,7 @@ class _AccountCardScreenState extends State<AccountCardScreen>
         // Note: use "automaticallyImplyLeading: false" if you do not personalize "leading" of Bar
         scaffold: Scaffold(
           body: AccountDetailScreen(
-              accountCategory: widget.accountCategory,
+              category: widget.category,
               applicationModel: widget.applicationModel,
               onDrawerPressed: () {
                 _innerDrawerKey.currentState.toggle(
@@ -80,12 +82,12 @@ class _AccountCardScreenState extends State<AccountCardScreen>
 }
 typedef void Callback();
 class LeftMenu extends StatelessWidget {
-  final AccountCategory accountCategory;
+  final CardModel category;
   final ApplicationModel applicationModel;
   final Callback onDrawerBackPressed;
 
   LeftMenu({
-    @required this.accountCategory,
+    @required this.category,
     @required this.applicationModel,
     @required this.onDrawerBackPressed,
   });
@@ -131,8 +133,8 @@ class LeftMenu extends StatelessWidget {
                     ),
                   ),
                    Text(
-                     applicationModel.accountModel.accountCategory.monthlyLimit > 0 ?
-                   applicationModel.commonModel.lng['current_limit'] + ' ' + _nf.format(applicationModel.accountModel.accountCategory.monthlyLimit) :
+                     applicationModel.accountModel.category.accountCategory.monthlyLimit > 0 ?
+                   applicationModel.commonModel.lng['current_limit'] + ' ' + _nf.format(applicationModel.accountModel.category.accountCategory.monthlyLimit) :
                    'No limit currently, set new one.',
                     style: TextStyle(
                       fontSize: 13.0,
@@ -155,12 +157,12 @@ class LeftMenu extends StatelessWidget {
                            hint:  _lng['limit_amount'],
                            onConfirm: (value) async{
                             await applicationModel.accountCategoryModel.updateCategory(
-                               AccountCategory(monthlyLimit: value,id: accountCategory.id )
+                               AccountCategory(monthlyLimit: value,id: category.accountCategory.id )
                                );
                             
-                            await applicationModel.accountModel.refreshCategoryId(accountCategory.id);
+                            await applicationModel.accountModel.refreshCategoryId(category.accountCategory.id);
                             await applicationModel.accountCategoryModel.refreshCategory(
-                              applicationModel.accountModel.accountCategory
+                              applicationModel.accountModel.category.accountCategory
                             );
                             
                              print('this is limit value ${value}');
@@ -187,8 +189,8 @@ class LeftMenu extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    applicationModel.accountModel.accountCategory.dailyLimit > 0 ?
-                    applicationModel.commonModel.lng['current_limit'] + ' ' + _nf.format(applicationModel.accountModel.accountCategory.dailyLimit):
+                    applicationModel.accountModel.category.accountCategory.dailyLimit > 0 ?
+                    applicationModel.commonModel.lng['current_limit'] + ' ' + _nf.format(applicationModel.accountModel.category.accountCategory.dailyLimit):
                     'No limit currently, set new one.' ,
                     style: TextStyle(
                       fontSize: 13.0,
@@ -210,11 +212,11 @@ class LeftMenu extends StatelessWidget {
                            hint:  _lng['limit_amount'],
                            onConfirm: (value) async{
                             await applicationModel.accountCategoryModel.updateCategory(
-                               AccountCategory(dailyLimit: value,id: accountCategory.id )
+                               AccountCategory(dailyLimit: value,id: category.accountCategory.id )
                                );
-                                await applicationModel.accountModel.refreshCategoryId(accountCategory.id);
+                                await applicationModel.accountModel.refreshCategoryId(category.accountCategory.id);
                                  await applicationModel.accountCategoryModel.refreshCategory(
-                              applicationModel.accountModel.accountCategory
+                              applicationModel.accountModel.category.accountCategory
                             );
                              print('this is limit value ${value}');
                            },
@@ -272,7 +274,7 @@ class LeftMenu extends StatelessWidget {
                               child: Text(_lng['delete']),
                               onPressed: () async{
                                await applicationModel.accountCategoryModel
-                                    .removeCategory(accountCategory.id);
+                                    .removeCategory(category.accountCategory.id);
                               await  applicationModel.accountCategoryModel
                                     .getCategoryList();
                               if(applicationModel.accountCategoryModel.categories != null && 
@@ -280,7 +282,7 @@ class LeftMenu extends StatelessWidget {
                                      await  applicationModel.accountCategoryModel
                                    .loadSummaryInfo(
           
-                                     applicationModel.accountCategoryModel.categories[0].id, 
+                                     applicationModel.accountCategoryModel.categories[0].accountCategory.id, 
                                      applicationModel.accountModel.dateFilter
                                      );
                               }

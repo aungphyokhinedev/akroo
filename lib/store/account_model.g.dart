@@ -9,21 +9,21 @@ part of 'account_model.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$AccountModel on AccountModelBase, Store {
-  final _$accountCategoryAtom = Atom(name: 'AccountModelBase.accountCategory');
+  final _$categoryAtom = Atom(name: 'AccountModelBase.category');
 
   @override
-  AccountCategory get accountCategory {
-    _$accountCategoryAtom.context.enforceReadPolicy(_$accountCategoryAtom);
-    _$accountCategoryAtom.reportObserved();
-    return super.accountCategory;
+  CardModel get category {
+    _$categoryAtom.context.enforceReadPolicy(_$categoryAtom);
+    _$categoryAtom.reportObserved();
+    return super.category;
   }
 
   @override
-  set accountCategory(AccountCategory value) {
-    _$accountCategoryAtom.context.conditionallyRunInAction(() {
-      super.accountCategory = value;
-      _$accountCategoryAtom.reportChanged();
-    }, _$accountCategoryAtom, name: '${_$accountCategoryAtom.name}_set');
+  set category(CardModel value) {
+    _$categoryAtom.context.conditionallyRunInAction(() {
+      super.category = value;
+      _$categoryAtom.reportChanged();
+    }, _$categoryAtom, name: '${_$categoryAtom.name}_set');
   }
 
   final _$dateFilterDurationTypeAtom =
@@ -153,10 +153,10 @@ mixin _$AccountModel on AccountModelBase, Store {
       ActionController(name: 'AccountModelBase');
 
   @override
-  dynamic setCategory(AccountCategory category) {
+  dynamic setCategory(CardModel value) {
     final _$actionInfo = _$AccountModelBaseActionController.startAction();
     try {
-      return super.setCategory(category);
+      return super.setCategory(value);
     } finally {
       _$AccountModelBaseActionController.endAction(_$actionInfo);
     }

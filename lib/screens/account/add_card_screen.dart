@@ -26,14 +26,15 @@ class _AddCardScreenState extends State<AddCardScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
   Color taskColor;
   IconData taskIcon;
-  var textController = new TextEditingController();
+  TextEditingController textController;
 
   @override
   void initState() {
     super.initState();
+    textController = new TextEditingController();
     setState(() {
       if (widget.isEditing) {
-        var _currentCat = widget.applicationModel.accountModel.accountCategory;
+        var _currentCat = widget.applicationModel.accountModel.category.accountCategory;
         newTask = _currentCat.name;
         textController.text = _currentCat.name;
         taskColor = ColorUtils.getColorFrom(id: _currentCat.color);
@@ -174,13 +175,14 @@ class _AddCardScreenState extends State<AddCardScreen> {
                 if (widget.isEditing) {
                   await widget.applicationModel.accountCategoryModel
                       .updateCategory(AccountCategory(
-                    id: widget.applicationModel.accountModel.accountCategory.id,
+                    id: widget.applicationModel.accountModel.category.accountCategory.id,
                     color: taskColor.value,
                     logo: taskIcon.codePoint,
                     name: newTask,
                   ));
                   await widget.applicationModel.accountCategoryModel
                       .getCategoryList();
+                 
                   Navigator.pop(context);
                   Navigator.pop(context);
                 } else {
@@ -194,6 +196,13 @@ class _AddCardScreenState extends State<AddCardScreen> {
                       .getCategoryList();
                 }
 
+                var cats = widget.applicationModel.accountCategoryModel.categories;
+                if(cats.length > 0){
+                   await widget.applicationModel.accountCategoryModel.loadSummaryInfo(
+                   cats[0].accountCategory.id,
+                    widget.applicationModel.accountModel.dateFilter);
+                }
+                
                 setState(() {
                   isProcessing = false;
                 });
@@ -218,6 +227,12 @@ class _AddCardScreenState extends State<AddCardScreen> {
         },
       ),
     );
+  }
+
+  @override
+  void dispose() {
+    textController.dispose();
+    super.dispose();
   }
 }
 

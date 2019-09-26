@@ -6,13 +6,13 @@ import 'package:essential/serializers/account_transaction.dart';
 import 'package:essential/serializers/account_transation_list.dart';
 import 'package:essential/serializers/date_filter.dart';
 import 'package:essential/serializers/pagiantion.dart';
-import 'package:essential/serializers/summary_info.dart';
-import 'package:essential/serializers/task_category.dart';
 import 'package:essential/utils/custom_http.dart';
 import 'package:tuple/tuple.dart';
 
 import '../utils/constants.dart';
 import 'package:mobx/mobx.dart';
+
+import 'card_model.dart';
 
 
 part 'account_model.g.dart';
@@ -21,7 +21,7 @@ class AccountModel = AccountModelBase with _$AccountModel;
 
 abstract class AccountModelBase with Store {
   @observable
-  AccountCategory accountCategory;
+  CardModel category;
 
   
 
@@ -47,8 +47,8 @@ abstract class AccountModelBase with Store {
   @observable
   Pagination pagination;
   @action
-  setCategory(AccountCategory category) {
-    accountCategory = category;
+  setCategory(CardModel value) {
+    category = value;
   }
 
   @action
@@ -62,7 +62,7 @@ abstract class AccountModelBase with Store {
   refresh() {
     pagination = new Pagination(total: 10, limit: 10, skip: 0);
     items.clear();
-    loadTransactions(accountCategory.id);
+    loadTransactions(category.accountCategory.id);
   }
 
 
@@ -71,7 +71,7 @@ abstract class AccountModelBase with Store {
   next() {
     if (pagination.hasNext()) {
       pagination.next();
-      loadTransactions(accountCategory.id);
+      loadTransactions(category.accountCategory.id);
     }
   }
 
@@ -104,7 +104,7 @@ abstract class AccountModelBase with Store {
       isLoading = true;
       await setCategoryById(catId)
           .then((AccountCategoryList result) {
-          accountCategory = result.topCategories.first;
+          category.accountCategory = result.topCategories.first;
       });
     } finally {
       isLoading = false;

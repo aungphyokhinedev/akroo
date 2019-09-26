@@ -33,16 +33,7 @@ class Background extends StatelessWidget {
           }
             
         ),
-         Observer(
-          builder: (context) =>  Container(
-          padding: EdgeInsets.only(bottom: 36.0),
-          alignment: Alignment.bottomCenter,
-          child: Text(
-            "",
-            style: TextStyle(fontSize: 10.0, color: Colors.white),
-          ),
-        )
-         ),
+        
        
       ],
     );

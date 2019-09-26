@@ -75,7 +75,7 @@ onDateChange(DateTime date, int type) {
     _applicationModel.commonModel.setDateFilter(date, type); 
     _applicationModel.accountModel.setDateFilter(new DateFilter(type, date));
     _applicationModel.accountCategoryModel.loadSummaryInfo(
-      _applicationModel.accountModel.accountCategory.id,
+      _applicationModel.accountModel.category.accountCategory.id,
       _applicationModel.accountModel.dateFilter
     );
   }
@@ -156,8 +156,9 @@ onDateChange(DateTime date, int type) {
 
   @override
   void dispose() {
-    super.dispose();
+    
     _disposers.forEach((disposer) => disposer());
     _controller.dispose();
+    super.dispose();
   }
 }

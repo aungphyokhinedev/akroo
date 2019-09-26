@@ -285,7 +285,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                     // );
                     await widget.applicationModel.accountModel.refresh();
                     await widget.applicationModel.accountCategoryModel.loadSummaryInfo(
-                      widget.applicationModel.accountModel.accountCategory.id,
+                      widget.applicationModel.accountModel.category.accountCategory.id,
                       widget.applicationModel.accountModel.dateFilter
                     );
                     // widget.todoModel.getTaskTodoList(widget.taskCategory.id);
@@ -315,7 +315,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
               await      widget.applicationModel.accountModel.addTransaction(newTransaction);
            await widget.applicationModel.accountModel.refresh();
            await  widget.applicationModel.accountCategoryModel.loadSummaryInfo(
-                                  widget.applicationModel.accountModel.accountCategory.id,
+                                  widget.applicationModel.accountModel.category.accountCategory.id,
                       widget.applicationModel.accountModel.dateFilter
            );
                     //  await widget.todoModel.addTaskTodo(

@@ -57,7 +57,7 @@ abstract class LoginModelBase with Store {
   @action
   Future<void> login(String token, String provider) async {
     try {
-      print('try to fetch');
+      print('try login fetch');
       if (isLoading) {
         return;
       }

@@ -6,7 +6,7 @@ class Lng {
   }
 
   String ts(String key, String lng){
-    return data[lng][key];
+    return data[lng][key] ?? '???';
   }
   
 }

@@ -19,10 +19,11 @@ class CommonModel = CommonModelBase with _$CommonModel;
 
 abstract class CommonModelBase with Store {
   @observable
-  Map<String,String> lng = en;
+  Map<String,String> lng;
 
   @observable
-  String currentLng = 'English';
+  String currentLng;
+
 
   @observable
   double scrollPosition = 0.0;
@@ -51,11 +52,7 @@ abstract class CommonModelBase with Store {
     
   }
 
-@action 
-  void setLng(String value){
-    currentLng = value;
-    lng = Lng().data[value];
-  }
+
 
   @action 
   void setScrollPosition(double value){
@@ -75,17 +72,26 @@ abstract class CommonModelBase with Store {
   }
 
   @action
-  Future<bool> getOnboardingDone()async{
-    isLoading = true;
+  Future<bool> initData()async{
     final prefs = await SharedPreferences.getInstance();
-    isOnBoarded = prefs.getBool('isOBDone') == true?? false;
-    isLoading = false;
+    isOnBoarded = prefs.getBool('isOBDone') ?? false;
+    currentLng = prefs.getString('lng') ?? 'English';
+    lng = Lng().data[currentLng];
     return isOnBoarded;
   }
 
   @action
-   Future<void> setOnboardingDone(bool value)async{
+   Future<void> setLng(String value)async{
     final prefs = await SharedPreferences.getInstance();
+    prefs.setString('lng', value);
+    currentLng = value;
+    lng = Lng().data[value];
+  }
+
+  @action
+   Future<void> setOnboarding(bool value)async{
+    final prefs = await SharedPreferences.getInstance();
+    isOnBoarded = true;
     prefs.setBool('isOBDone', value);
   }
 

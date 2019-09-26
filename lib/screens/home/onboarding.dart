@@ -1,15 +1,26 @@
+import 'package:essential/store/application_model.dart';
 import 'package:essential/utils/size_config.dart';
 import 'package:essential/widgets/inheriteddataprovider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
 
 import 'home.dart';
 
-/// This is the main method of app, from here execution starts.
-/// App widget class
+class OnBoardingScreen extends StatefulWidget {
+  final ApplicationModel applicationModel;
+  OnBoardingScreen({
+    @required this.applicationModel,
+  });
 
-class OnBoarding extends StatelessWidget {
+  @override
+  State<StatefulWidget> createState() {
+    return _OnBoardingScreenState();
+  }
+}
+
+class _OnBoardingScreenState extends State<OnBoardingScreen>{
   
   //making list of pages needed to pass in IntroViewsFlutter constructor.
 
@@ -17,9 +28,8 @@ class OnBoarding extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
      SizeConfig().init(context);
-    final _applicationModel =
-        InheritedDataProvider.of(context).applicationModel;
-    _applicationModel.loginModel.signOut();
+     widget.applicationModel.loginModel.signOut();
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'IntroViews Flutter', //title of app
@@ -27,7 +37,9 @@ class OnBoarding extends StatelessWidget {
         primarySwatch: Colors.blue,
       ), //ThemeData
       home: Builder(
-        builder: (context) => IntroViewsFlutter(
+        builder: (context) =>
+         Observer(builder: (context) { 
+           return IntroViewsFlutter(
            [
     PageViewModel(
         pageColor: Colors.blueGrey,
@@ -39,7 +51,7 @@ class OnBoarding extends StatelessWidget {
         title: Text(
           'UTILITIES',
         ),
-             titleTextStyle: TextStyle(fontSize: SizeConfig.blockSizeVertical * 3, color: Colors.white),
+             titleTextStyle: TextStyle(fontSize: SizeConfig.blockSizeVertical * 2.5, color: Colors.white),
       bodyTextStyle: TextStyle( fontSize: SizeConfig.blockSizeVertical * 1.8,color: Colors.white),
         mainImage: Image.asset(
           'assets/images/ob01.png',
@@ -49,35 +61,30 @@ class OnBoarding extends StatelessWidget {
         )),
     PageViewModel(
       pageColor: Colors.blueGrey,
-      iconImageAssetPath: 'assets/images/onboard01.png',
+      iconImageAssetPath: 'assets/images/ob02.png',
       body: Text(
-        'Check your daily or monthly expense. \nPlace limitation and compare easily.',
+        'Check your daily/monthly income/expense. \nPut your limits and compare easily.',
       ),
       title: Text('EASY CHECK'),
       mainImage: Image.asset(
-        'assets/images/onboard01.png',
-        width:SizeConfig.blockSizeVertical * 20,
+        'assets/images/ob02.png',
+        width:SizeConfig.blockSizeVertical * 25,
         alignment: Alignment.center,
       ),
-          titleTextStyle: TextStyle(fontSize: SizeConfig.blockSizeVertical * 3, color: Colors.white),
+          titleTextStyle: TextStyle(fontSize: SizeConfig.blockSizeVertical * 2.5, color: Colors.white),
       bodyTextStyle: TextStyle( fontSize: SizeConfig.blockSizeVertical * 1.8,color: Colors.white),
     ),
  
   ],
-          onTapDoneButton: () {
-            _applicationModel.commonModel.setOnboardingDone(true);
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => HomePage(),
-              ), //MaterialPageRoute
-            );
+          onTapDoneButton: () async {
+            await  widget.applicationModel.commonModel.setOnboarding(true);
+          
           },
           pageButtonTextStyles: TextStyle(
             color: Colors.white,
             fontSize: SizeConfig.blockSizeVertical * 2,
           ),
-        ), //IntroViewsFlutter
+        );}), //IntroViewsFlutter
       ), //Builder
     ); //Material App
   }

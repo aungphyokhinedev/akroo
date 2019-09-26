@@ -43,6 +43,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context){
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
+    commonData.setDateFilter(DateTime.now(), Constants.timestampOptionMonth);
     
     return MaterialApp(
       title: 'Essential',

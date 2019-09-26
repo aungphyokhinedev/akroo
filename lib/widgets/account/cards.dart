@@ -4,6 +4,7 @@ import 'package:essential/serializers/account_category.dart';
 import 'package:essential/serializers/date_filter.dart';
 
 import 'package:essential/store/application_model.dart';
+import 'package:essential/store/card_model.dart';
 import 'package:essential/utils/color_utils.dart';
 import 'package:essential/utils/constants.dart';
 import 'package:essential/utils/size_config.dart';
@@ -49,13 +50,15 @@ class _AccountCardsState extends State<AccountCards>
     );
     if(widget.applicationModel.accountCategoryModel.categories != null){
       refreshCategory(widget.applicationModel,
-      widget.applicationModel.accountCategoryModel.categories[0]);
+      widget.applicationModel.accountCategoryModel.categories[0].accountCategory);
     }
     print('init system account ..... ()');
   }
 
   refreshCategory(ApplicationModel applicationModel, AccountCategory category) {
-    applicationModel.accountModel.setCategory(category);
+    applicationModel.accountModel.setCategory(CardModel(
+      category,null
+    ));
     //  DateFilter dateFilter = applicationModel.commonModel.dateFilter;
     applicationModel.accountModel
         .setDateFilter(applicationModel.commonModel.dateFilter);
@@ -75,7 +78,7 @@ class _AccountCardsState extends State<AccountCards>
     _disposers
         .add(reaction((_) => _applicationModel.commonModel.dateFilter, (msg) {
       refreshCategory(
-          _applicationModel, _applicationModel.accountModel.accountCategory);
+          _applicationModel, _applicationModel.accountModel.category.accountCategory);
     }));
 
     _disposers.add(reaction(
@@ -119,7 +122,7 @@ class _AccountCardsState extends State<AccountCards>
                   bottom: SizeConfig.blockSizeVertical * 7.0),
               height: SizeConfig.screenHeight,
               child: Observer(builder: (context) {
-                List<AccountCategory> data =
+                List<CardModel> data =
                     _applicationModel.accountCategoryModel.categories;
 
                 if (_applicationModel.accountCategoryModel.isLoading ||
@@ -128,25 +131,24 @@ class _AccountCardsState extends State<AccountCards>
                 }
 
                 //adding add new card
-                if (data.where((d) => d.isAdd).length == 0) {
-                  data.add(new AccountCategory(
-                      name: "",
+                if (data.where((d) => d.accountCategory.isAdd).length == 0) {
+                  CardModel cardModel = CardModel(AccountCategory(
                       color: ColorUtils.defaultColors[0].value,
-                      id: "",
                       isAdd: true,
-                      logo: Icons.work.codePoint));
+                      logo: Icons.work.codePoint), null);
+                  data.add(cardModel);
                 }
 
-                if (_applicationModel.accountModel.accountCategory == null) {
-                  refreshCategory(_applicationModel, data[0]);
+                if (_applicationModel.accountModel.category == null) {
+                  refreshCategory(_applicationModel, data[0].accountCategory);
                 }
 
                
 
                 onPagechange(index) {
            
-                  refreshCategory(_applicationModel, data[index]);
-                  _applicationModel.commonModel.setBackColor(data[index].color);
+                  refreshCategory(_applicationModel, data[index].accountCategory);
+                  _applicationModel.commonModel.setBackColor(data[index].accountCategory.color);
                 }
 
                 return PageView(
@@ -167,15 +169,16 @@ class _AccountCardsState extends State<AccountCards>
 
   @override
   void dispose() {
-    super.dispose();
+    
     _disposers.forEach((disposer) => disposer());
     _controller.dispose();
     _pageController.dispose();
+    super.dispose();
   }
 }
 
 class BuildCategory extends StatelessWidget {
-  final AccountCategory category;
+  final CardModel category;
   final ApplicationModel applicationModel;
   BuildCategory({this.category, this.applicationModel});
 

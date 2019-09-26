@@ -2,6 +2,7 @@ import 'package:clipboard_manager/clipboard_manager.dart';
 import 'package:essential/serializers/account_category.dart';
 import 'package:essential/serializers/task_category.dart';
 import 'package:essential/store/application_model.dart';
+import 'package:essential/store/card_model.dart';
 import 'package:essential/utils/color_utils.dart';
 import 'package:essential/utils/constants.dart';
 import 'package:essential/utils/size_config.dart';
@@ -14,11 +15,11 @@ import 'package:simple_moment/simple_moment.dart';
 import 'add_item_screen.dart';
 
 class AccountDetailScreen extends StatefulWidget {
-  final AccountCategory accountCategory;
+  final CardModel category;
   final ApplicationModel applicationModel;
   final Callback onDrawerPressed;
   AccountDetailScreen({
-    @required this.accountCategory,
+    @required this.category,
     @required this.applicationModel,
     @required this.onDrawerPressed,
   });
@@ -32,7 +33,7 @@ class AccountDetailScreen extends StatefulWidget {
 class _AccountDetailScreenState extends State<AccountDetailScreen>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
-  Animation<Offset> _animation;
+  CurvedAnimation _animation;
   ScrollController _scrollController;
   Color _color;
 
@@ -46,16 +47,18 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
   @override
   void initState() {
     super.initState();
+    print('init card detail screen');
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
     _controller = AnimationController(
       vsync: this,
       duration: Duration(milliseconds: 300),
     );
-    _animation = Tween<Offset>(begin: Offset(0, 1.0), end: Offset(0.0, 0.0))
-        .animate(_controller);
-    _controller.forward();
-    _color = ColorUtils.getColorFrom(id: widget.accountCategory.color);
+    _animation = CurvedAnimation(
+      parent: _controller,
+      curve: Curves.easeInOut,
+    );
+    _color = ColorUtils.getColorFrom(id: widget.category.accountCategory.color);
 
     // widget.applicationModel.accountModel.setCategory(widget.taskCategory);
     //  DateFilter dateFilter = widget.applicationModel.commonModel.dateFilter;
@@ -87,6 +90,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
   }
 
   bool _visible = true;
+  String _selectedId;
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
@@ -122,21 +126,23 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
           var items = widget.applicationModel.accountModel.items;
           var pagination = widget.applicationModel.accountModel.pagination;
           var moment = new Moment.now();
-          var _mf = new DateFormat('ddMMMyy');
+          var _mf = new DateFormat('dd/MM/yy');
           var _df = new DateFormat('HH:mm');
           var _load = widget.applicationModel.accountModel.isLoading;
           return items.length == 0
               ? Center(
                   child: Column(
-                  children: _load?
-                   <Widget>[Text('Loading transaction.')]:         
-                  <Widget>[
-                    Text('Currently no transaction.'),
-                    Text('Press button to add new transaction.'),
-                  ],
+                  children: _load
+                      ? <Widget>[Text('Loading transaction.')]
+                      : <Widget>[
+                          Text('Currently no transaction.'),
+                          Text('Press button to add new transaction.'),
+                        ],
                 ))
               : Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 6.0, vertical: 8.0),
+                  padding: EdgeInsets.symmetric(
+                      horizontal: SizeConfig.blockSizeVertical * 1.5,
+                      vertical: 8.0),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -168,7 +174,8 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
                                 ),
                               ),
                               Container(
-                                child: Text(widget.accountCategory.name,
+                                child: Text(
+                                    widget.category.accountCategory.name,
                                     style: Theme.of(context)
                                         .textTheme
                                         .title
@@ -179,18 +186,19 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
                               //
                             ],
                           ),
-                        ),  
-                        _load?
-                        Center(child: CircularProgressIndicator(
-                            strokeWidth: 1,
-                        ),)
-                        :
-                        Container(),
+                        ),
+                        _load
+                            ? Center(
+                                child: CircularProgressIndicator(
+                                  strokeWidth: 1,
+                                ),
+                              )
+                            : Container(),
                         Expanded(
                           child: Padding(
-                            padding: EdgeInsets.only(top:SizeConfig.blockSizeVertical * 1),
+                            padding: EdgeInsets.only(
+                                top: SizeConfig.blockSizeVertical * 1),
                             child: ListView.builder(
-
                               controller: _scrollController,
                               itemBuilder: (BuildContext context, int index) {
                                 //var todo = todoModel.todos[index];
@@ -203,77 +211,141 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
                                   delegate: new SlidableDrawerDelegate(),
                                   actionExtentRatio: 0.25,
                                   child: new Container(
-                                    color: Colors.white,
-                                    child: 
-                                    
-                                    new ListTile(
-                                     dense: true,
-                                      onLongPress: () {
-                                        ClipboardManager.copyToClipBoard(
-                                                items[index].amount.toString() +
-                                                    '(' +
-                                                    items[index].title +
-                                                    ')')
-                                            .then((result) {
-                                          final snackBar = SnackBar(
-                                            content:
-                                                Text('Copied to Clipboard'),
-                                            action: SnackBarAction(
-                                              label: 'Undo',
-                                              onPressed: () {},
-                                            ),
-                                          );
-                                          Scaffold.of(context)
-                                              .showSnackBar(snackBar);
-                                        });
-                                      },
-                                    leading: CircleAvatar(
-                                      radius: SizeConfig.blockSizeVertical * 2.5,
-                                      backgroundColor: 
-                                      items[index].type == Constants.transactionExpense? 
-                                      _color : Colors.grey,
-                                      child: Text('${index+1}'),
-                                      foregroundColor: Colors.white,
-                                    ),
-                                    trailing: Container(width: 0,),
-                                      title: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                         
-                                          new Text(
-                                                numberFormat
-                                              .format(items[index].amount) 
-                                         ,
-                                              style: TextStyle(
-                                                fontSize: SizeConfig.blockSizeVertical * 2.2,
-                                               fontWeight: FontWeight.w500,
-                                                color:Colors.black54
-                                              ),),
-                                       
-                                        ],
-                                      ),
-                                      subtitle: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: <Widget>[
-                                   
-                                          new Flexible(
-                                              fit: FlexFit.loose,
-                                              child: Text(
-                                                items[index].title,
-                                                softWrap: true,
-                                                overflow: TextOverflow.fade,
-                                                 style: TextStyle(
-                                                fontSize: SizeConfig.blockSizeVertical * 1.7,
-                                              )
-                                              )),
-                                         
+                                      color: Colors.white,
+                                      child: InkWell(
+                                        onTap: (){
+                                          setState(() {
+                                            _selectedId = items[index].id;
+                                          print(_selectedId);
+                                          });
                                           
-                                        ],
-                                      ),
-                                    ),
-                                  ),
+                                        },
+                                        onLongPress: () {
+                                          ClipboardManager.copyToClipBoard(
+                                                  items[index]
+                                                          .amount
+                                                          .toString() +
+                                                      '(' +
+                                                      items[index].title +
+                                                      ')')
+                                              .then((result) {
+                                            final snackBar = SnackBar(
+                                              content:
+                                                  Text('Copied to Clipboard'),
+                                              action: SnackBarAction(
+                                                label: 'Undo',
+                                                onPressed: () {},
+                                              ),
+                                            );
+                                            Scaffold.of(context)
+                                                .showSnackBar(snackBar);
+                                          });
+                                        },
+                                        child:
+                                        Padding(padding: EdgeInsets.symmetric(
+                                          vertical: SizeConfig.blockSizeVertical * 2
+                                        )
+                                        ,
+                                        child: 
+                                         Container(
+                                         
+                                          child: 
+                                          Column(
+                                            children: <Widget>[
+                                           
+                                          Row(
+                                            
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: <Widget>[
+                                              Row(children: <Widget>[
+
+                                            
+                                              Container(width: SizeConfig.blockSizeVertical * 2,),
+                                              Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: <Widget>[
+                                                  Text(
+                                                    numberFormat.format(
+                                                        items[index].amount),
+                                                    style: TextStyle(
+                                                        fontSize: SizeConfig
+                                                                .blockSizeVertical *
+                                                            2.2,
+                                                        fontWeight:
+                                                            FontWeight.w500,
+                                                        color: items[index]
+                                                                    .type ==
+                                                                Constants
+                                                                    .transactionExpense
+                                                            ? Colors.black54
+                                                            : _color),
+                                                  ),
+                                                
+                                              
+                                                 Text(
+                                                          items[index].title  ,
+                                                          softWrap: true,
+                                                          overflow:
+                                                              TextOverflow.fade,
+                                                          style: TextStyle(
+                                                            color:
+                                                                Colors.black54,
+                                                            fontSize: SizeConfig
+                                                                    .blockSizeVertical *
+                                                                1.7,
+                                                          )),
+                                                      
+                                                       
+                                                 
+                                                  
+                                                ],
+                                              ),
+                                              
+                                                ],),
+                                           
+                                               
+                                            ],
+                                          ),
+                                           items[index].id == _selectedId ?
+                                                        Padding(
+                                                          padding: EdgeInsets.symmetric(
+                                                            vertical: SizeConfig.blockSizeVertical * 1,
+                                                            horizontal: SizeConfig.blockSizeVertical * 2
+                                                          ),
+                                                          child: 
+                                                        Row(
+                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                          children: <Widget>[
+                                                              Text(_mf.format(items[index].time) +' ' +_df.format(items[index].time
+                                                              ),
+                           
+                                                      style: TextStyle(
+                                                            color:
+                                                                Colors.black54,
+                                                            fontSize: SizeConfig
+                                                                    .blockSizeVertical *
+                                                                1.7,
+                                                          )),
+                                                          Text(moment.from(items[index].time) ,
+                                                          style: TextStyle(
+                                                                color:
+                                                                Colors.black54,
+                                                            fontSize: SizeConfig
+                                                                    .blockSizeVertical *
+                                                                1.7,
+                                                          ))
+                                                          ],
+                                                        )
+                                                        ,)
+                                                        :
+                                                        Container()
+                                          ],
+                                          )
+                                        ),
+                                        )
+                                      )),
                                   actions: <Widget>[],
                                   secondaryActions: <Widget>[
                                     new IconSlideAction(
@@ -287,16 +359,24 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
                                       color: Colors.red,
                                       icon: Icons.delete,
                                       onTap: () async {
-                                       await widget.applicationModel.accountModel
+                                        await widget
+                                            .applicationModel.accountModel
                                             .removeTransaction(items[index].id)
                                             .then((onValue) {
                                           items.removeAt(index);
                                         });
-                                     
-                                        await widget.applicationModel.accountCategoryModel.loadSummaryInfo(
-                                          widget.applicationModel.accountModel.accountCategory.id,
-                                          widget.applicationModel.accountModel.dateFilter
-                                        );
+
+                                        await widget
+                                            .applicationModel.accountCategoryModel
+                                            .loadSummaryInfo(
+                                                widget
+                                                    .applicationModel
+                                                    .accountModel
+                                                    .category
+                                                    .accountCategory
+                                                    .id,
+                                                widget.applicationModel
+                                                    .accountModel.dateFilter);
                                       },
                                     ),
                                   ],
@@ -325,7 +405,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
                   context,
                   MaterialPageRoute(
                     builder: (context) => AddTransactionScreen(
-                      accountCategory: widget.accountCategory,
+                      accountCategory: widget.category.accountCategory,
                       applicationModel: widget.applicationModel,
                     ),
                   ),

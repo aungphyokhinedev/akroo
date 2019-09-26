@@ -4,6 +4,7 @@ import 'package:essential/screens/home/prices_page.dart';
 import 'package:essential/widgets/inheriteddataprovider.dart';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_facebook_login/flutter_facebook_login.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:kf_drawer/kf_drawer.dart';
 
@@ -31,14 +32,14 @@ class _HomePageState extends State<HomePage> {
           icon: Icon(Icons.home, color: Colors.white),
           page: MainPage(),
         ),
-        KFDrawerItem.initWithPage(
-          text: Text(
-            'CALENDAR',
-            style: TextStyle(color: Colors.white),
-          ),
-          icon: Icon(Icons.calendar_today, color: Colors.white),
-          page: CalendarPage(),
-        ),
+      //  KFDrawerItem.initWithPage(
+        //  text: Text(
+        //    'CALENDAR',
+        //    style: TextStyle(color: Colors.white),
+        //  ),
+        //  icon: Icon(Icons.calendar_today, color: Colors.white),
+        //  page: CalendarPage(),
+      //  ),
         KFDrawerItem.initWithPage(
           text: Text(
             'MARKET PRICES',
@@ -95,8 +96,10 @@ return KFDrawerItem(
             color: Colors.white,
           ),
           onPressed: () {
-            _applicationModel.commonModel.setOnboardingDone(null);
+        //    _applicationModel.commonModel.setOnboarding(null);
             _applicationModel.loginModel.signOut();
+            final facebookLogin = FacebookLogin();
+            facebookLogin.logOut();
           },
         );
           }

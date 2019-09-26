@@ -1,6 +1,7 @@
 
 import 'package:essential/serializers/account_category.dart';
 import 'package:essential/serializers/task_category.dart';
+import 'package:essential/store/card_model.dart';
 import 'package:essential/utils/color_utils.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -86,7 +87,7 @@ class _TodoCardsState extends State<TodoCards> with TickerProviderStateMixin {
               height: MediaQuery.of(context).size.height * .72,
               child: Observer(builder: (context) {
             
-                  List<AccountCategory> data = _applicationModel.accountCategoryModel.categories;
+                  List<CardModel> data = _applicationModel.accountCategoryModel.categories;
                   var newcat = new TaskCategory(
                         name: "",
                         color: ColorUtils.defaultColors[0].value,
@@ -95,7 +96,7 @@ class _TodoCardsState extends State<TodoCards> with TickerProviderStateMixin {
                         logo: Icons.work.codePoint);
                 
                   setBackColor(index) {
-                    _applicationModel.commonModel.setBackColor(data[index].color);
+                    _applicationModel.commonModel.setBackColor(data[index].accountCategory.color);
                   }
 
                   return PageView(

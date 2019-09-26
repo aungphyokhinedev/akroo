@@ -87,7 +87,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                         .textTheme
                                         .title
                                         .copyWith(color: Colors.white)),
-               new Text("v1.0.3",
+               new Text("v1.0.4",
               style: TextStyle(
                 color:Colors.white
               )),

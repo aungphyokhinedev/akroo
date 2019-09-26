@@ -44,7 +44,7 @@ class _MonthPickerState extends State<MonthPickerTimeline> {
   Widget build(BuildContext context) {
     // final _applicationModel = InheritedDataProvider.of(context).applicationModel;
      SizeConfig().init(context);
-    return   Observer(builder: (context) {
+
    //   DateTime _setDate = _applicationModel.commonModel.dateFilter.selectedDate;
 //DateTime _startDate = DateTime.now().add(new Duration(days: 30));
     return Container(
@@ -81,7 +81,7 @@ class _MonthPickerState extends State<MonthPickerTimeline> {
       ),
     );
     
-    });
+   
   }
 
   bool compareMonth(DateTime date1, DateTime date2) {

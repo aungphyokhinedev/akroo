@@ -12,14 +12,14 @@ mixin _$AccountCategoryModel on AccountCategoryModelBase, Store {
   final _$categoriesAtom = Atom(name: 'AccountCategoryModelBase.categories');
 
   @override
-  ObservableList<AccountCategory> get categories {
+  ObservableList<CardModel> get categories {
     _$categoriesAtom.context.enforceReadPolicy(_$categoriesAtom);
     _$categoriesAtom.reportObserved();
     return super.categories;
   }
 
   @override
-  set categories(ObservableList<AccountCategory> value) {
+  set categories(ObservableList<CardModel> value) {
     _$categoriesAtom.context.conditionallyRunInAction(() {
       super.categories = value;
       _$categoriesAtom.reportChanged();
@@ -41,23 +41,6 @@ mixin _$AccountCategoryModel on AccountCategoryModelBase, Store {
       super.isLoading = value;
       _$isLoadingAtom.reportChanged();
     }, _$isLoadingAtom, name: '${_$isLoadingAtom.name}_set');
-  }
-
-  final _$summaryInfoAtom = Atom(name: 'AccountCategoryModelBase.summaryInfo');
-
-  @override
-  SummaryInfo get summaryInfo {
-    _$summaryInfoAtom.context.enforceReadPolicy(_$summaryInfoAtom);
-    _$summaryInfoAtom.reportObserved();
-    return super.summaryInfo;
-  }
-
-  @override
-  set summaryInfo(SummaryInfo value) {
-    _$summaryInfoAtom.context.conditionallyRunInAction(() {
-      super.summaryInfo = value;
-      _$summaryInfoAtom.reportChanged();
-    }, _$summaryInfoAtom, name: '${_$summaryInfoAtom.name}_set');
   }
 
   final _$getCategoryListAsyncAction = AsyncAction('getCategoryList');

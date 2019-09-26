@@ -162,19 +162,25 @@ mixin _$CommonModel on CommonModelBase, Store {
     }, _$observcountAtom, name: '${_$observcountAtom.name}_set');
   }
 
-  final _$getOnboardingDoneAsyncAction = AsyncAction('getOnboardingDone');
+  final _$initDataAsyncAction = AsyncAction('initData');
 
   @override
-  Future<bool> getOnboardingDone() {
-    return _$getOnboardingDoneAsyncAction.run(() => super.getOnboardingDone());
+  Future<bool> initData() {
+    return _$initDataAsyncAction.run(() => super.initData());
   }
 
-  final _$setOnboardingDoneAsyncAction = AsyncAction('setOnboardingDone');
+  final _$setLngAsyncAction = AsyncAction('setLng');
 
   @override
-  Future<void> setOnboardingDone(bool value) {
-    return _$setOnboardingDoneAsyncAction
-        .run(() => super.setOnboardingDone(value));
+  Future<void> setLng(String value) {
+    return _$setLngAsyncAction.run(() => super.setLng(value));
+  }
+
+  final _$setOnboardingAsyncAction = AsyncAction('setOnboarding');
+
+  @override
+  Future<void> setOnboarding(bool value) {
+    return _$setOnboardingAsyncAction.run(() => super.setOnboarding(value));
   }
 
   final _$CommonModelBaseActionController =
@@ -185,16 +191,6 @@ mixin _$CommonModel on CommonModelBase, Store {
     final _$actionInfo = _$CommonModelBaseActionController.startAction();
     try {
       return super.setDateFilter(value, timeStampOption);
-    } finally {
-      _$CommonModelBaseActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void setLng(String value) {
-    final _$actionInfo = _$CommonModelBaseActionController.startAction();
-    try {
-      return super.setLng(value);
     } finally {
       _$CommonModelBaseActionController.endAction(_$actionInfo);
     }

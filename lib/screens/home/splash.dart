@@ -17,19 +17,19 @@ class Splash extends StatelessWidget {
   //making list of pages needed to pass in IntroViewsFlutter constructor.
 
 
+
   @override
   Widget build(BuildContext context) {
     final _applicationModel = InheritedDataProvider.of(context).applicationModel;
      SizeConfig().init(context);
-    _applicationModel.commonModel.setDateFilter(DateTime.now(), Constants.timestampOptionMonth);
-    
-     new Future.delayed(const Duration(milliseconds: 1000), (){
-       _applicationModel.commonModel.getOnboardingDone();
-       
 
-     });
+    new Future.delayed(const Duration(milliseconds: 1000), (){
+      _applicationModel.commonModel.initData();
+    });
+   
+     
     return  Observer(builder: (_)  {
-            if(_applicationModel.commonModel.isLoading == null){
+            if(_applicationModel.commonModel.isOnBoarded == null){
               return
               Container(
                 color: Colors.blueGrey,
@@ -48,7 +48,8 @@ Image.asset(
                ;
             }
 
-      return  _applicationModel.commonModel.isOnBoarded == true ? HomePage() : OnBoarding();
+      return  _applicationModel.commonModel.isOnBoarded == true ? HomePage() : 
+      OnBoardingScreen(applicationModel: _applicationModel,);
 
           
           
