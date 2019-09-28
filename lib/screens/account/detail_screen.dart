@@ -1,4 +1,4 @@
-import 'package:clipboard_manager/clipboard_manager.dart';
+
 import 'package:essential/serializers/account_category.dart';
 import 'package:essential/serializers/task_category.dart';
 import 'package:essential/store/application_model.dart';
@@ -220,27 +220,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
                                           });
                                           
                                         },
-                                        onLongPress: () {
-                                          ClipboardManager.copyToClipBoard(
-                                                  items[index]
-                                                          .amount
-                                                          .toString() +
-                                                      '(' +
-                                                      items[index].title +
-                                                      ')')
-                                              .then((result) {
-                                            final snackBar = SnackBar(
-                                              content:
-                                                  Text('Copied to Clipboard'),
-                                              action: SnackBarAction(
-                                                label: 'Undo',
-                                                onPressed: () {},
-                                              ),
-                                            );
-                                            Scaffold.of(context)
-                                                .showSnackBar(snackBar);
-                                          });
-                                        },
+                                       
                                         child:
                                         Padding(padding: EdgeInsets.symmetric(
                                           vertical: SizeConfig.blockSizeVertical * 2
