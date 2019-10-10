@@ -1,6 +1,6 @@
 class Constants {
   static final String baseUrl =
-    // "http://192.168.100.4:3030";
+  // "http://192.168.100.4:3030";
    'https://li1765-242.members.linode.com/akroo';
 
   static String newsUrl(int newsId) {

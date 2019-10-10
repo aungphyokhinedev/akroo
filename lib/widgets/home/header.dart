@@ -60,7 +60,7 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
             _Icon(),
              Observer(builder: (context) {
            return Text(
-                      "twatchat",
+                      "twet chat",
                       style: TextStyle(
                           fontSize: SizeConfig.blockSizeVertical *3.5,
                           height: 1,

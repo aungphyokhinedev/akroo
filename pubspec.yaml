@@ -1,5 +1,5 @@
 name: essential
-description: A new Flutter project.
+description: Easy calculation.
 
 # The following defines the version and build number for your application.
 # A version number is three numbers separated by dots, like 1.2.43
@@ -11,7 +11,7 @@ description: A new Flutter project.
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 2.0.0+11
+version: 2.0.0+13
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
@@ -50,6 +50,9 @@ dependencies:
   simple_moment: ^1.0.3
   shared_preferences: ^0.5.3+4
   intro_views_flutter: '^2.4.0'
+  fluttertoast: ^3.0.3
+  math_expressions: ^1.0.0
+  swipedetector: ^1.2.0
   
 
 dev_dependencies:
@@ -79,7 +82,9 @@ flutter:
     - family: Tharlon
       fonts:
         - asset: assets/fonts/Tharlon-Regular.ttf
-
+    - family:  MyFlutterApp
+      fonts:
+        - asset: assets/fonts/MyFlutterApp.ttf
   # To add assets to your application, add an assets section, like this:
   assets:
    - assets/images/

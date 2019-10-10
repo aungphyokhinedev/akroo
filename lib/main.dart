@@ -1,11 +1,10 @@
 
 import 'package:essential/screens/common/class_builder.dart';
-import 'package:essential/screens/home/home.dart';
-import 'package:essential/screens/home/onboarding.dart';
 import 'package:essential/screens/home/splash.dart';
 import 'package:essential/store/account_category_model.dart';
 import 'package:essential/store/account_model.dart';
 import 'package:essential/store/application_model.dart';
+import 'package:essential/store/calculate_model.dart';
 import 'package:essential/store/calendar_model.dart';
 import 'package:essential/store/common_model.dart';
 import 'package:essential/store/login_model.dart';
@@ -16,8 +15,7 @@ import 'package:essential/utils/MyThemes.dart';
 import 'package:essential/utils/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:rxdart/rxdart.dart';
+
 
 import 'widgets/inheriteddataprovider.dart';
 
@@ -40,6 +38,7 @@ class MyApp extends StatelessWidget {
   final loginModel = LoginModel();
   final calendarModel = CalendarModel();
   final priceListModel = PriceListModel();
+  final calculateModle = CalculateModel();
   @override
   Widget build(BuildContext context){
     SystemChrome.setEnabledSystemUIOverlays([SystemUiOverlay.top]);
@@ -60,7 +59,8 @@ class MyApp extends StatelessWidget {
           todoData,
           loginModel,
           calendarModel,
-          priceListModel
+          priceListModel,
+          calculateModle
         ),
       ),
     );

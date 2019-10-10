@@ -1,10 +1,6 @@
 
-import 'package:essential/serializers/account_category.dart';
-import 'package:essential/serializers/task_category.dart';
+
 import 'package:essential/store/application_model.dart';
-import 'package:essential/store/card_model.dart';
-import 'package:essential/utils/color_utils.dart';
-import 'package:essential/utils/constants.dart';
 import 'package:essential/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -12,68 +8,40 @@ import 'package:intl/intl.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:simple_moment/simple_moment.dart';
 import 'package:flutter/services.dart';
-import 'add_item_screen.dart';
 
-class AccountDetailScreen extends StatefulWidget {
-  final CardModel category;
+
+class CalculatorListScreen extends StatefulWidget {
   final ApplicationModel applicationModel;
-  final Callback onDrawerPressed;
-  AccountDetailScreen({
-    @required this.category,
+  CalculatorListScreen({
     @required this.applicationModel,
-    @required this.onDrawerPressed,
   });
 
   @override
   State<StatefulWidget> createState() {
-    return _AccountDetailScreenState();
+    return _CalculatorListScreenState();
   }
 }
 
-class _AccountDetailScreenState extends State<AccountDetailScreen>
+class _CalculatorListScreenState extends State<CalculatorListScreen>
     with SingleTickerProviderStateMixin {
   AnimationController _controller;
   CurvedAnimation _animation;
   ScrollController _scrollController;
-  Color _color;
-
-  //Tuple2<AccountTransactionList, Pagination> transactionList;
-  //List<AccountTransaction> items;
-  // Pagination pagination;
-  String message = "";
-  NumberFormat numberFormat =
-      new NumberFormat.currency(name: '', decimalDigits: 2);
+  String message;
 
   @override
   void initState() {
     super.initState();
-    print('init card detail screen');
     _scrollController = ScrollController();
     _scrollController.addListener(_scrollListener);
-    _controller = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 300),
-    );
-    _animation = CurvedAnimation(
-      parent: _controller,
-      curve: Curves.easeInOut,
-    );
-    _color = ColorUtils.getColorFrom(id: widget.category.accountCategory.color);
-
-    // widget.applicationModel.accountModel.setCategory(widget.taskCategory);
-    //  DateFilter dateFilter = widget.applicationModel.commonModel.dateFilter;
-    // if(dateFilter == null){
-    //   dateFilter = DateFilter(Constants.timestampOptionMonth, DateTime.now());
-    // }
-    // widget.applicationModel.accountModel.setDateFilter(dateFilter);
-    widget.applicationModel.accountModel.refresh();
+    widget.applicationModel.calculateModel.refresh();
   }
 
-  _scrollListener() {
+   _scrollListener() {
     if (_scrollController.offset >=
             _scrollController.position.maxScrollExtent &&
         !_scrollController.position.outOfRange) {
-      widget.applicationModel.accountModel.next();
+      widget.applicationModel.calculateModel.next();
 
       setState(() {
         message = "reach the bottom";
@@ -89,13 +57,14 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
     }
   }
 
-  bool _visible = true;
+ var _mf = new DateFormat('dd/MM/yy');
+ var _df = new DateFormat('hh:mm');
   String _selectedId;
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
     return Theme(
-      data: ThemeData(primarySwatch: _color),
+      data: ThemeData(primarySwatch: Colors.blueGrey),
       child: Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
@@ -111,32 +80,21 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
           brightness: Brightness.light,
           backgroundColor: Colors.white,
           actions: [
-            new IconButton(
-              padding: EdgeInsets.only(right: 20),
-              icon: new Icon(
-                Icons.menu,
-              ),
-              onPressed: () {
-                widget.onDrawerPressed();
-              },
-            ),
+            
           ],
         ),
         body: Observer(builder: (_) {
-          var items = widget.applicationModel.accountModel.items;
-          var pagination = widget.applicationModel.accountModel.pagination;
+          var items = widget.applicationModel.calculateModel.grouplists;
+          var pagination = widget.applicationModel.calculateModel.pagination;
           var moment = new Moment.now();
-          var _mf = new DateFormat('dd/MM/yy');
-          var _df = new DateFormat('HH:mm');
-          var _load = widget.applicationModel.accountModel.isLoading;
+          var _load = widget.applicationModel.calculateModel.isLoading;
           return items.length == 0
               ? Center(
                   child: Column(
                   children: _load
                       ? <Widget>[Text('Loading transaction.')]
                       : <Widget>[
-                          Text('Currently no transaction.'),
-                          Text('Press button to add new transaction.'),
+                          Text('Currently no calculation history.'),
                         ],
                 ))
               : Padding(
@@ -175,7 +133,7 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
                               ),
                               Container(
                                 child: Text(
-                                    widget.category.accountCategory.name,
+                                    'Saved Calculations',
                                     style: Theme.of(context)
                                         .textTheme
                                         .title
@@ -215,10 +173,10 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
                                       child: InkWell(
                                         onTap: (){
                                           setState(() {
-                                            _selectedId = items[index].id;
-                                          print(_selectedId);
-                                          });
+                                           _selectedId = items[index].id;
                                           
+                                          });
+                                              
                                         },
                                        
                                         child:
@@ -247,25 +205,21 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
                                                     CrossAxisAlignment.start,
                                                 children: <Widget>[
                                                   Text(
-                                                    numberFormat.format(
-                                                        items[index].amount),
+                                                    items[index].name,
+                                                    
                                                     style: TextStyle(
+                                                      color: Colors.black87,
                                                         fontSize: SizeConfig
                                                                 .blockSizeVertical *
                                                             2.2,
                                                         fontWeight:
                                                             FontWeight.w500,
-                                                        color: items[index]
-                                                                    .type ==
-                                                                Constants
-                                                                    .transactionExpense
-                                                            ? Colors.black54
-                                                            : _color),
+                                                      ),
                                                   ),
                                                 
                                               
                                                  Text(
-                                                          items[index].title  ,
+                                                          _mf.format(items[index].time) ,
                                                           softWrap: true,
                                                           overflow:
                                                               TextOverflow.fade,
@@ -298,8 +252,8 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
                                                         Row(
                                                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                                           children: <Widget>[
-                                                              Text(_mf.format(items[index].time) +' ' +_df.format(items[index].time
-                                                              ),
+                                                              Text(_df.format(items[index].time),
+                                                            
                            
                                                       style: TextStyle(
                                                             color:
@@ -329,11 +283,14 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
                                   actions: <Widget>[],
                                   secondaryActions: <Widget>[
                                     new IconSlideAction(
-                                      caption: 'Copy',
+                                      caption: 'Open',
                                       color: Colors.black45,
                                       icon: Icons.more_horiz,
                                       onTap: (){
-                                        Clipboard.setData(new ClipboardData(text: items[index].title + '\n' +items[index].amount.toString()+ '\n' + _mf.format(items[index].time)));
+                                         widget.applicationModel.calculateModel.setCurrentGroup(
+                                          items[index]
+                                        );
+                                         Navigator.of(context).pop();
                                       },
                                     ),
                                     new IconSlideAction(
@@ -341,24 +298,10 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
                                       color: Colors.red,
                                       icon: Icons.delete,
                                       onTap: () async {
-                                        await widget
-                                            .applicationModel.accountModel
-                                            .removeTransaction(items[index].id)
-                                            .then((onValue) {
-                                          items.removeAt(index);
-                                        });
-
-                                        await widget
-                                            .applicationModel.accountCategoryModel
-                                            .loadSummaryInfo(
-                                                widget
-                                                    .applicationModel
-                                                    .accountModel
-                                                    .category
-                                                    .accountCategory
-                                                    .id,
-                                                widget.applicationModel
-                                                    .accountModel.dateFilter);
+                                        await widget.applicationModel.calculateModel.deleteCaculateGroup(
+                                          items[index]
+                                        );
+                                            
                                       },
                                     ),
                                   ],
@@ -375,30 +318,9 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
         //  DetailView(taskCategory: widget.taskCategory),
         //  todoData: widget.todoModel,
 
-        floatingActionButton: AnimatedOpacity(
-            // If the widget is visible, animate to 0.0 (invisible).
-            // If the widget is hidden, animate to 1.0 (fully visible).
-            opacity: _visible ? 1.0 : 0.0,
-            duration: Duration(milliseconds: 500),
-            child: FloatingActionButton(
-              heroTag: 'fab_new_task',
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => AddTransactionScreen(
-                      accountCategory: widget.category.accountCategory,
-                      applicationModel: widget.applicationModel,
-                    ),
-                  ),
-                );
-              },
-              tooltip: 'New Todo',
-              backgroundColor: _color,
-              foregroundColor: Colors.white,
-              child: Icon(Icons.add),
-            )),
-      ),
+       
+            ),
+     
     );
   }
 
@@ -406,61 +328,5 @@ class _AccountDetailScreenState extends State<AccountDetailScreen>
   void dispose() {
     _controller.dispose();
     super.dispose();
-  }
-}
-
-typedef void Callback();
-
-class SimpleAlertDialog extends StatelessWidget {
-  final Color color;
-  final Callback onActionPressed;
-
-  SimpleAlertDialog({
-    @required this.color,
-    @required this.onActionPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return FlatButton(
-      textColor: color,
-      child: Icon(Icons.more),
-      onPressed: () {
-        showDialog(
-          context: context,
-          barrierDismissible: false, // user must tap button!
-          builder: (BuildContext context) {
-            return AlertDialog(
-              title: Text('Delete this card?'),
-              content: SingleChildScrollView(
-                child: ListBody(
-                  children: <Widget>[
-                    Text(
-                        'This is a one way street! Deleting this will remove all the task assigned in this card.'),
-                  ],
-                ),
-              ),
-              actions: <Widget>[
-                FlatButton(
-                  child: Text('Delete'),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop();
-                    onActionPressed();
-                  },
-                ),
-                FlatButton(
-                  child: Text('Cancel'),
-                  textColor: Colors.grey,
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            );
-          },
-        );
-      },
-    );
   }
 }

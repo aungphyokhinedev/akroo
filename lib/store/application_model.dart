@@ -1,4 +1,5 @@
 import 'package:essential/store/account_model.dart';
+import 'package:essential/store/calculate_model.dart';
 import 'package:essential/store/calendar_model.dart';
 
 import 'package:essential/store/common_model.dart';
@@ -16,6 +17,7 @@ class ApplicationModel {
   LoginModel loginModel;
   CalendarModel calendarModel;
   PriceListModel priceListModel;
+  CalculateModel calculateModel;
 
-  ApplicationModel(this.accountModel,this.accountCategoryModel,this.commonModel, this.toDoModel, this.loginModel, this.calendarModel, this.priceListModel);
+  ApplicationModel(this.accountModel,this.accountCategoryModel,this.commonModel, this.toDoModel, this.loginModel, this.calendarModel, this.priceListModel, this.calculateModel);
 }

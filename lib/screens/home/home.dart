@@ -1,6 +1,8 @@
 
 import 'package:essential/screens/common/class_builder.dart';
+import 'package:essential/screens/calculator/calculator_page.dart';
 import 'package:essential/screens/home/prices_page.dart';
+import 'package:essential/widgets/calculator/home.dart';
 import 'package:essential/widgets/inheriteddataprovider.dart';
 
 import 'package:flutter/material.dart';
@@ -32,14 +34,14 @@ class _HomePageState extends State<HomePage> {
           icon: Icon(Icons.home, color: Colors.white),
           page: MainPage(),
         ),
-      //  KFDrawerItem.initWithPage(
-        //  text: Text(
-        //    'CALENDAR',
-        //    style: TextStyle(color: Colors.white),
-        //  ),
-        //  icon: Icon(Icons.calendar_today, color: Colors.white),
-        //  page: CalendarPage(),
-      //  ),
+        KFDrawerItem.initWithPage(
+          text: Text(
+            'CALCULATOR',
+            style: TextStyle(color: Colors.white),
+          ),
+          icon: Icon(Icons.calendar_today, color: Colors.white),
+          page: CalculatorPage(),
+        ),
         KFDrawerItem.initWithPage(
           text: Text(
             'MARKET PRICES',
@@ -75,7 +77,7 @@ class _HomePageState extends State<HomePage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
               Text(
-              "twatchat",
+              "twet chat",
                       style: TextStyle(fontSize: 30.0, color: Colors.white),
                     ),
                 Text("Time to save money.",

@@ -2,6 +2,7 @@ import 'package:essential/store/application_model.dart';
 import 'package:essential/utils/size_config.dart';
 import 'package:essential/widgets/inheriteddataprovider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
@@ -27,18 +28,23 @@ class _OnBoardingScreenState extends State<OnBoardingScreen>{
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setEnabledSystemUIOverlays([]);
      SizeConfig().init(context);
      widget.applicationModel.loginModel.signOut();
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'IntroViews Flutter', //title of app
+      title: 'Twat Chat', //title of app
+      color: Colors.blueGrey,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ), //ThemeData
       home: Builder(
         builder: (context) =>
-         Observer(builder: (context) { 
+
+        SafeArea(
+         
+          child: Observer(builder: (context) { 
            return IntroViewsFlutter(
            [
     PageViewModel(
@@ -84,7 +90,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen>{
             color: Colors.white,
             fontSize: SizeConfig.blockSizeVertical * 2,
           ),
-        );}), //IntroViewsFlutter
+        );}),
+        )
+         , //IntroViewsFlutter
       ), //Builder
     ); //Material App
   }

@@ -55,7 +55,7 @@ class _MonthPickerState extends State<MonthPickerTimeline> {
         itemBuilder: (context, index) {
           // Return the Date Widget
            DateTime datenow = widget.startDate;
-            DateTime date =  new DateTime(datenow.year, datenow.month - index, datenow.day);
+            DateTime date =  new DateTime(datenow.year, datenow.month - index, 1);
        //   DateTime date = DateTime.now().subtract(Duration(days: index));
           bool isSelected = compareMonth(date,  widget.setDate,);
 
