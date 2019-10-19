@@ -1,6 +1,7 @@
 
 import 'package:essential/serializers/date_filter.dart';
 import 'package:essential/utils/Languages.dart';
+import 'package:essential/utils/MyThemes.dart';
 import 'package:essential/utils/color_utils.dart';
 import 'package:essential/utils/constants.dart';
 import 'package:flutter/material.dart';
@@ -24,6 +25,8 @@ abstract class CommonModelBase with Store {
   @observable
   String currentLng;
 
+  @observable
+  String currentTheme;
 
   @observable
   double scrollPosition = 0.0;
@@ -77,6 +80,7 @@ abstract class CommonModelBase with Store {
     isOnBoarded = prefs.getBool('isOBDone') ?? false;
     currentLng = prefs.getString('lng') ?? 'English';
     lng = Lng().data[currentLng];
+    await initTheme();
     return isOnBoarded;
   }
 
@@ -86,6 +90,19 @@ abstract class CommonModelBase with Store {
     prefs.setString('lng', value);
     currentLng = value;
     lng = Lng().data[value];
+  }
+
+   @action
+   Future<void> initTheme()async{
+    final prefs = await SharedPreferences.getInstance();
+    currentTheme = prefs.getString('theme') ?? MyThemes.themes.keys.first;
+  }
+
+   @action
+   Future<void> setTheme(String value)async{
+    final prefs = await SharedPreferences.getInstance();
+    prefs.setString('theme', value);
+    currentTheme = value;
   }
 
   @action

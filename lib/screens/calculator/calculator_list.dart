@@ -1,6 +1,7 @@
 
 
 import 'package:essential/store/application_model.dart';
+import 'package:essential/utils/CustomThemes.dart';
 import 'package:essential/utils/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -24,8 +25,7 @@ class CalculatorListScreen extends StatefulWidget {
 
 class _CalculatorListScreenState extends State<CalculatorListScreen>
     with SingleTickerProviderStateMixin {
-  AnimationController _controller;
-  CurvedAnimation _animation;
+
   ScrollController _scrollController;
   String message;
 
@@ -63,10 +63,7 @@ class _CalculatorListScreenState extends State<CalculatorListScreen>
   @override
   Widget build(BuildContext context) {
     SizeConfig().init(context);
-    return Theme(
-      data: ThemeData(primarySwatch: Colors.blueGrey),
-      child: Scaffold(
-        backgroundColor: Colors.white,
+    return Scaffold(
         appBar: AppBar(
           leading: new IconButton(
             padding: EdgeInsets.only(left: 0),
@@ -76,9 +73,9 @@ class _CalculatorListScreenState extends State<CalculatorListScreen>
             onPressed: () => Navigator.of(context).pop(),
           ),
           elevation: 0,
-          iconTheme: IconThemeData(color: Colors.black26),
-          brightness: Brightness.light,
-          backgroundColor: Colors.white,
+          iconTheme: CustomTheme.of(context).iconTheme,
+            brightness: CustomTheme.of(context).brightness,
+          backgroundColor: Colors.transparent,
           actions: [
             
           ],
@@ -125,19 +122,15 @@ class _CalculatorListScreenState extends State<CalculatorListScreen>
                                 child: Text(
                                   'Total ${pagination.total}',
                                   // "${model.getTotalTodosFrom(_task)} Task",
-                                  style: Theme.of(context)
-                                      .textTheme
-                                      .body1
-                                      .copyWith(color: Colors.grey[500]),
+                                  style: CustomTheme.of(context).textTheme.body1,
                                 ),
                               ),
                               Container(
                                 child: Text(
                                     'Saved Calculations',
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .title
-                                        .copyWith(color: Colors.black54)),
+                                    style:CustomTheme.of(context).textTheme.title.copyWith(
+                                                      fontSize: SizeConfig.blockSizeVertical * 2.3
+                                                    )),
                               ),
                               Spacer(),
                               // SparkGraph(expense: expense, income: income,)
@@ -164,18 +157,18 @@ class _CalculatorListScreenState extends State<CalculatorListScreen>
                                 _showSnackBar(String r) {
                                   print(r);
                                 }
-
+  
                                 return new Slidable(
                                   delegate: new SlidableDrawerDelegate(),
                                   actionExtentRatio: 0.25,
                                   child: new Container(
-                                      color: Colors.white,
+                                     // color: Colors.white,
                                       child: InkWell(
                                         onTap: (){
-                                          setState(() {
-                                           _selectedId = items[index].id;
-                                          
-                                          });
+                                          widget.applicationModel.calculateModel.setCurrentGroup(
+                                          items[index]
+                                        );
+                                         Navigator.of(context).pop();
                                               
                                         },
                                        
@@ -207,29 +200,18 @@ class _CalculatorListScreenState extends State<CalculatorListScreen>
                                                   Text(
                                                     items[index].name,
                                                     
-                                                    style: TextStyle(
-                                                      color: Colors.black87,
-                                                        fontSize: SizeConfig
-                                                                .blockSizeVertical *
-                                                            2.2,
-                                                        fontWeight:
-                                                            FontWeight.w500,
-                                                      ),
+                                                    style: CustomTheme.of(context).textTheme.title.copyWith(
+                                                      fontSize: SizeConfig.blockSizeVertical * 2
+                                                    ),
                                                   ),
                                                 
                                               
                                                  Text(
-                                                          _mf.format(items[index].time) ,
+                                                          moment.from(items[index].time) ,
                                                           softWrap: true,
                                                           overflow:
                                                               TextOverflow.fade,
-                                                          style: TextStyle(
-                                                            color:
-                                                                Colors.black54,
-                                                            fontSize: SizeConfig
-                                                                    .blockSizeVertical *
-                                                                1.7,
-                                                          )),
+                                                          style: CustomTheme.of(context).textTheme.body1),
                                                       
                                                        
                                                  
@@ -242,39 +224,7 @@ class _CalculatorListScreenState extends State<CalculatorListScreen>
                                                
                                             ],
                                           ),
-                                           items[index].id == _selectedId ?
-                                                        Padding(
-                                                          padding: EdgeInsets.symmetric(
-                                                            vertical: SizeConfig.blockSizeVertical * 1,
-                                                            horizontal: SizeConfig.blockSizeVertical * 2
-                                                          ),
-                                                          child: 
-                                                        Row(
-                                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                          children: <Widget>[
-                                                              Text(_df.format(items[index].time),
-                                                            
-                           
-                                                      style: TextStyle(
-                                                            color:
-                                                                Colors.black54,
-                                                            fontSize: SizeConfig
-                                                                    .blockSizeVertical *
-                                                                1.7,
-                                                          )),
-                                                          Text(moment.from(items[index].time) ,
-                                                          style: TextStyle(
-                                                                color:
-                                                                Colors.black54,
-                                                            fontSize: SizeConfig
-                                                                    .blockSizeVertical *
-                                                                1.7,
-                                                          ))
-                                                          ],
-                                                        )
-                                                        ,)
-                                                        :
-                                                        Container()
+                                          
                                           ],
                                           )
                                         ),
@@ -282,17 +232,7 @@ class _CalculatorListScreenState extends State<CalculatorListScreen>
                                       )),
                                   actions: <Widget>[],
                                   secondaryActions: <Widget>[
-                                    new IconSlideAction(
-                                      caption: 'Open',
-                                      color: Colors.black45,
-                                      icon: Icons.more_horiz,
-                                      onTap: (){
-                                         widget.applicationModel.calculateModel.setCurrentGroup(
-                                          items[index]
-                                        );
-                                         Navigator.of(context).pop();
-                                      },
-                                    ),
+                                  
                                     new IconSlideAction(
                                       caption: 'Delete',
                                       color: Colors.red,
@@ -319,14 +259,13 @@ class _CalculatorListScreenState extends State<CalculatorListScreen>
         //  todoData: widget.todoModel,
 
        
-            ),
+         
      
     );
   }
 
   @override
   void dispose() {
-    _controller.dispose();
     super.dispose();
   }
 }

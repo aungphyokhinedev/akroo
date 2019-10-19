@@ -145,8 +145,8 @@ Future<Tuple2<AccountTransactionList, Pagination>> fetchTransactionList(
       '&\$limit=' +
       pagination.limit.toString() +
       '&\$sort[time]=-1';
-  url += '&time[\$gt]=' + date.start.microsecondsSinceEpoch.toString();
-  url += '&time[\$lt]=' + date.end.microsecondsSinceEpoch.toString();
+  url += '&time[\$gte]=' + date.start.millisecondsSinceEpoch.toString();
+  url += '&time[\$lt]=' + date.end.millisecondsSinceEpoch.toString();
   print('url ${url}');
   final response = await CustomHttp.http.get(url);
 

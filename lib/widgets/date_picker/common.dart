@@ -10,10 +10,10 @@ import 'package:flutter/material.dart';
 class AppColors {
   AppColors._();
 
-  static const Color defaultDateColor = Color(0xFFFFFFFF);
+  static const Color defaultDateColor = Color(0x60000000);
   static const Color defaultDayColor = Colors.black;
   static const Color defaultMonthColor = Colors.black;
-  static const Color defaultSelectionColor = Color(0x20000000);
+  static const Color defaultSelectionColor = Color(0xFFFFFFFF);
 }
 
 class Dimen {

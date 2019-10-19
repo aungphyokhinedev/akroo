@@ -138,7 +138,7 @@ Future<SummaryInfo> fetchSummaryInfo(
   String url = Constants.baseUrl +
       '/summary?cid=' +
       catId;
-  url += '&time[\$gt]=' + date.start.millisecondsSinceEpoch.toString();
+  url += '&time[\$gte]=' + date.start.millisecondsSinceEpoch.toString();
   url += '&time[\$lt]=' + date.end.millisecondsSinceEpoch.toString();
  
   print('url ${url}');

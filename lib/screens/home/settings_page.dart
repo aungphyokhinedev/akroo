@@ -1,4 +1,7 @@
+import 'package:essential/utils/CustomThemes.dart';
 import 'package:essential/utils/Languages.dart';
+import 'package:essential/utils/MyThemes.dart';
+import 'package:essential/utils/constants.dart';
 import 'package:essential/widgets/gradient_background.dart';
 import 'package:essential/widgets/inheriteddataprovider.dart';
 import 'package:flutter/material.dart';
@@ -15,15 +18,30 @@ class SettingsPage extends KFDrawerContent {
 
 class _SettingsPageState extends State<SettingsPage> {
   List _lngs = Lng().data.keys.toList();
- 
+  List _themes = MyThemes.themes.keys.toList();
   List<DropdownMenuItem<String>> _dropDownMenuItems;
+  List<DropdownMenuItem<String>> _dropDownThemeItems;
   String _currentLng;
+  String _currentTheme;
 
   @override
   void initState() {
     _dropDownMenuItems = getDropDownMenuItems();
+    _dropDownThemeItems = getDropDownThemeItems();
+ 
   //  _currentLng = _lngs[0];
     super.initState();
+  }
+
+   List<DropdownMenuItem<String>> getDropDownThemeItems() {
+    List<DropdownMenuItem<String>> items = new List();
+    for (String them in _themes) {
+      items.add(new DropdownMenuItem(
+          value: them,
+          child: new Text(them)
+      ));
+    }
+    return items;
   }
 
   List<DropdownMenuItem<String>> getDropDownMenuItems() {
@@ -46,33 +64,35 @@ class _SettingsPageState extends State<SettingsPage> {
         InheritedDataProvider.of(context).applicationModel;
      
         
-    return Stack(alignment: Alignment.topCenter, children: <Widget>[
-       GradientBackground(
-        color: Colors.blueGrey,
-      ),
+    return 
+    new Scaffold(
+     appBar: AppBar(
+            leading: new IconButton(
+              padding: EdgeInsets.only(left: 0),
+              icon: new Icon(
+                Icons.arrow_back_ios,
+              ),
+              onPressed: () => widget.onMenuPressed(),
+            ),
+            elevation: 0,
+            iconTheme: CustomTheme.of(context).iconTheme,
+            brightness: CustomTheme.of(context).brightness,
+            backgroundColor: Colors.transparent,
+           
+          ),
+        body:
+    Stack(
+      
+      alignment: Alignment.topCenter, children: <Widget>[
+    //   GradientBackground(
+    //    color: Colors.blueGrey,
+    //  ),
        SafeArea(
       child:  Column(
         crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                ClipRRect(
-                  borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                  child: Material(
-                    shadowColor: Colors.transparent,
-                    color: Colors.transparent,
-                    child: IconButton(
-                      icon: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white70,
-                      ),
-                      onPressed: widget.onMenuPressed,
-                    ),
-                  ),
-                ),
-              ],
-            ),
+           
             Expanded(
               child:
                  Container(
@@ -85,17 +105,15 @@ class _SettingsPageState extends State<SettingsPage> {
                Text('Settings',
                                     style: Theme.of(context)
                                         .textTheme
-                                        .title
-                                        .copyWith(color: Colors.white)),
-               new Text("v1.0.5",
-              style: TextStyle(
-                color:Colors.white
-              )),
+                                        .title),
+               new Text(Constants.version,
+              style: Theme.of(context)
+                                        .textTheme.body1),
                Container(height: 30,),
               new Text("Please choose your language: ",
-              style: TextStyle(
-                color:Colors.white
-              )),
+              style:  Theme.of(context)
+                                        .textTheme
+                                        .subhead),
            
            
              Observer(builder: (_) { 
@@ -107,9 +125,34 @@ class _SettingsPageState extends State<SettingsPage> {
                   _applicationModel.commonModel.setLng(value);
                     //changedDropDownItem(selectedCity);
                 },
-                style: TextStyle(
-                  color: Colors.black
-                ),
+                style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle,
+              );
+             }),
+               Container(height: 30,),
+              new Text("Please choose your theme: ",
+              style:  Theme.of(context)
+                                        .textTheme
+                                        .subhead),
+           
+           
+             Observer(builder: (_) { 
+               _currentTheme = _applicationModel.commonModel.currentTheme;
+               return new DropdownButton(
+                value: _currentTheme,
+                items: _dropDownThemeItems,
+                onChanged: (value){
+                  //
+                    _applicationModel.commonModel.setTheme(value);
+                    MyThemeKeys _theme = MyThemes.themes[value];
+                    
+                    CustomTheme.instanceOf(context).changeTheme(_theme);
+                    //changedDropDownItem(selectedCity);
+                },
+                style: Theme.of(context)
+                                        .textTheme
+                                        .subtitle,
               );
              })
             ],
@@ -121,13 +164,14 @@ class _SettingsPageState extends State<SettingsPage> {
           ],
         )),
       
-     ] );
+     ] )
+    );
     
   }
 
-  void changedDropDownItem(String selectedCity) {
+  void changedDropDownItem(String value) {
     setState(() {
-      _currentLng = selectedCity;
+      _currentLng = value;
     });
   }
 }

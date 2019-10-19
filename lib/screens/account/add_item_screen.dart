@@ -1,6 +1,7 @@
 import 'package:essential/serializers/account_category.dart';
 import 'package:essential/serializers/account_transaction.dart';
 import 'package:essential/store/application_model.dart';
+import 'package:essential/utils/CustomThemes.dart';
 import 'package:essential/utils/color_utils.dart';
 import 'package:essential/utils/constants.dart';
 import 'package:essential/utils/size_config.dart';
@@ -62,17 +63,20 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
         return true;
       }
       return false;
-    }
+    }  
 
     var _color = ColorUtils.getColorFrom(id: widget.accountCategory.color);
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.white,
+   //   backgroundColor: Colors.white,
       appBar: AppBar(
+        iconTheme: CustomTheme.of(context).iconTheme,
+        brightness:Theme.of(context).brightness ,
         leading: new IconButton(
             padding: EdgeInsets.only(left: 0),
             icon: new Icon(
               Icons.arrow_back_ios,
+
             ),
             onPressed: () => Navigator.of(context).pop(),
           ),
@@ -80,15 +84,18 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
         Observer(builder: (context) {
           return Text(
           widget.applicationModel.commonModel.lng['add_new'],
-          style: TextStyle(color: Colors.black,
-            fontSize:  SizeConfig.blockSizeVertical * 2.5),
+          style: Theme.of(context)
+                 .textTheme
+                  .subhead
+          
+           ,
         );
         }),
         centerTitle: true,
         elevation: 0,
-        iconTheme: IconThemeData(color: Colors.black26),
-        brightness: Brightness.light,
-        backgroundColor: Colors.white,
+       
+     //   brightness: Brightness.light,
+        backgroundColor: Colors.transparent,
       ),
       body:
        Container(
@@ -99,10 +106,12 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
           children: [
             Text(
               'What transaction are you planning to add?',
-              style: TextStyle(
-                  color: Colors.black38,
-                  fontWeight: FontWeight.w600,
-                  fontSize:  SizeConfig.blockSizeVertical * 2.3),
+              style: CustomTheme.of(context).textTheme.body1.copyWith(
+                fontWeight: FontWeight.w600,
+                  fontSize:  SizeConfig.blockSizeVertical * 2.1
+              )
+              
+            
             ),
              Container(
               height: 16.0,
@@ -120,15 +129,14 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                     children: <Widget>[
   Text('${yearFormatter.format(newTransaction.time)}',
                    style: TextStyle(
-                  color: Colors.black38,
-                  fontWeight: FontWeight.w500,
-                  fontSize:  SizeConfig.blockSizeVertical * 2.3)
+//                  fontWeight: FontWeight.w500,
+                  fontSize:  SizeConfig.blockSizeVertical * 2.1)
                   ),
                     Text('${dateFormatter.format(newTransaction.time)}',
                    style: TextStyle(
-                  color: Colors.black38,
+          //        color: Colors.black38,
                    fontWeight: FontWeight.w500,
-                  fontSize:  SizeConfig.blockSizeVertical * 2.3,
+                  fontSize:  SizeConfig.blockSizeVertical * 2.1,
                 )
                   )
                   ],)
@@ -161,11 +169,13 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                 InkWell(
                   child: Text('${timeFormatter.format(newTransaction.time)}',
                    style: TextStyle(
-                  color: Colors.black38,
+                //  color: Colors.black38,
                   fontWeight: FontWeight.w500,
-                  fontSize: SizeConfig.blockSizeVertical * 2.3)),
+                  fontSize: SizeConfig.blockSizeVertical * 2.1)),
                   onTap: () {
-                    DatePicker.showTimePicker(context, showTitleActions: true,
+                    DatePicker.showTimePicker(context, 
+                   
+                    showTitleActions: true,
                         onChanged: (date) {
                       print('change $date');
                     }, onConfirm: (date) {
@@ -204,10 +214,10 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                   border: InputBorder.none,
                   hintText: widget.applicationModel.commonModel.lng['your_title'] + '...',
                   hintStyle: TextStyle(
-                    color: Colors.black26,
+             //       color: Colors.black26,
                   )),
               style: TextStyle(
-                  color: Colors.black54,
+             //     color: Colors.black54,
                   fontWeight: FontWeight.w500,
                   fontSize:  SizeConfig.blockSizeVertical * 4),
             );
@@ -229,10 +239,10 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
                   border: InputBorder.none,
                   hintText: widget.applicationModel.commonModel.lng['amount'],
                   hintStyle: TextStyle(
-                    color: Colors.black26,
+             //       color: Colors.black26,
                   )),
               style: TextStyle(
-                  color: Colors.black54,
+               //   color: Colors.black54,
                   fontWeight: FontWeight.w500,
                   fontSize: 20.0),
             );
@@ -263,7 +273,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
               FloatingActionButton.extended(
                 //  heroTag: 'fab_new_task',
                 icon: Icon(Icons.arrow_downward),
-                backgroundColor: _color,
+              //  backgroundColor: _color,
                 label: 
                   Observer(builder: (context) {
           return Text(widget.applicationModel.commonModel.lng['expense']);
@@ -297,7 +307,7 @@ class _AddTransactionScreenState extends State<AddTransactionScreen> {
               FloatingActionButton.extended(
                 heroTag: 'fab_new_task',
                 icon: Icon(Icons.arrow_upward),
-                backgroundColor: _color,
+            //    backgroundColor: _color,
                 label:  Observer(builder: (context) {
           return Text(widget.applicationModel.commonModel.lng['income']);
                   }),

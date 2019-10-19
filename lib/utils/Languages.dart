@@ -28,7 +28,7 @@ const en = <String, String>{
   'set_new_monthly': 'Set new monthly limit?',
   'set_new_daily': 'Set new daily limit?',
   'current_limit': 'Current limit',
-  'delete_card': 'Delete this account?',
+  'delete_card': 'Delete this card?',
   'add_new': 'Add New',
   'your_title': 'Your Title',
   'amount': 'Amount', 

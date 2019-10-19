@@ -47,16 +47,9 @@ class _AccountCardState extends State<AccountCard> {
             vertical: SizeConfig.blockSizeVertical * 1, horizontal: 10.0),
         padding: EdgeInsets.all(SizeConfig.blockSizeHorizontal * 5),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Colors.white12,
           borderRadius: BorderRadius.circular(12.0),
-          boxShadow: <BoxShadow>[
-            BoxShadow(
-              color: Colors.grey[400],
-              blurRadius: 4.0,
-              spreadRadius: -2.0,
-              offset: Offset(0.0, 1.0),
-            )
-          ],
+          
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(12.0),
@@ -82,7 +75,7 @@ class _AccountCardState extends State<AccountCard> {
       return Material(
         borderRadius:
             BorderRadius.circular(SizeConfig.blockSizeHorizontal * 4.0),
-        color: Colors.white,
+        color: Colors.transparent,
         child: InkWell(
           onTap: () {
             Navigator.push(
@@ -100,7 +93,7 @@ class _AccountCardState extends State<AccountCard> {
                 Icon(
                   Icons.add,
                   size: SizeConfig.blockSizeVertical * 7.0,
-                  color: color,
+                  color: Colors.white70,
                 ),
                 Container(
                   height: SizeConfig.blockSizeVertical * 2.0,
@@ -108,7 +101,7 @@ class _AccountCardState extends State<AccountCard> {
                 Observer(builder: (_) {
                   return Text(
                     applicationModel.commonModel.lng['add_category'],
-                    style: TextStyle(color: color),
+                    style: TextStyle(color:  Colors.white70),
                   );
                 })
               ],
@@ -147,7 +140,7 @@ class _AccountCardState extends State<AccountCard> {
                             shape: BoxShape.circle,
                             border: Border.all(
                                 color:
-                                    ColorUtils.getColorFrom(id: category.accountCategory.color),
+                                    Colors.white,
                                 //  style: BorderStyle.solid,
                                 width: 0.0),
                           ),
@@ -159,7 +152,7 @@ class _AccountCardState extends State<AccountCard> {
                                 fontFamily: 'MaterialIcons',
                               ),
                               color:
-                                  ColorUtils.getColorFrom(id: category.accountCategory.color),
+                                  Colors.white,
                             ),
                           ),
                         ),
@@ -196,6 +189,14 @@ class _AccountCardState extends State<AccountCard> {
                           : 0.0;
                     }
 
+                    double _exp = (_info.expense / _total) * 100;
+                    double _inc = (_info.income / _total) * 100;
+                    double _lmn = _limit > 0
+                                        ?(
+                                  _limit >   _info.expense ? (_info.expense / _limit) * 100
+                                  : 100)
+                                        : 0.0;
+
                     return Stack(
                         alignment: AlignmentDirectional.topStart,
                         children: <Widget>[
@@ -203,11 +204,9 @@ class _AccountCardState extends State<AccountCard> {
                               alignment: AlignmentDirectional.center,
                               children: <Widget>[
                                 SparkGraph(
-                                    expense: _info.expense / _total * 100,
-                                    income: _info.income / _total * 100,
-                                    limit: _limit > 0
-                                        ? _info.expense / _limit * 100
-                                        : 0.0,
+                                    expense: _exp,
+                                    income: _inc,
+                                    limit: _lmn,
                                     color: ColorUtils.getColorFrom(
                                         id: category.accountCategory.color)),
                                 Center(
@@ -217,14 +216,14 @@ class _AccountCardState extends State<AccountCard> {
                                         ? Text(
                                             'out ${_nf.format(_info.expense)}',
                                             style: TextStyle(
-                                              color: Colors.black54,
+                                              color: Colors.white70,
                                             ),
                                           )
                                         : Container(),
                                     _info.income > 0
                                         ? Text('in ${_nf.format(_info.income)}',
                                             style: TextStyle(
-                                              color: Colors.black54,
+                                              color: Colors.white70,
                                             ))
                                         : Container(),
                                   ],
@@ -275,14 +274,14 @@ class _AccountCardState extends State<AccountCard> {
                           style: TextStyle(
                               height: 1,
                               fontSize: SizeConfig.blockSizeVertical * 3.0,
-                              color: Colors.black87),
+                              color: Colors.white),
                           softWrap: false,
                         ),
                         Text(_limitStr,
                             style: TextStyle(
                                 height: 1.5,
                                 fontSize: SizeConfig.blockSizeVertical * 1.7,
-                                color: Colors.grey))
+                                color: Colors.white54))
                       ],
                     );
                   }),
@@ -326,12 +325,12 @@ class SparkGraph extends StatelessWidget {
           <CircularSegmentEntry>[
             new CircularSegmentEntry(
               income,
-              this.color,
+               Colors.white70,
               rankKey: 'completed',
             ),
             new CircularSegmentEntry(
               expense,
-              Colors.grey,
+              Colors.black38,
               rankKey: 'completed',
             ),
           ],

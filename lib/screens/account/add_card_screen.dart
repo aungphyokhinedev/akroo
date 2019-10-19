@@ -1,5 +1,6 @@
 import 'package:essential/serializers/account_category.dart';
 import 'package:essential/store/application_model.dart';
+import 'package:essential/utils/CustomThemes.dart';
 import 'package:essential/utils/color_utils.dart';
 import 'package:essential/utils/size_config.dart';
 import 'package:essential/widgets/icon_picker.dart';
@@ -57,8 +58,9 @@ class _AddCardScreenState extends State<AddCardScreen> {
 
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: Colors.white,
+
       appBar: AppBar(
+            iconTheme: CustomTheme.of(context).iconTheme,
         leading: new IconButton(
           padding: EdgeInsets.only(left: 0),
           icon: new Icon(
@@ -68,17 +70,16 @@ class _AddCardScreenState extends State<AddCardScreen> {
         ),
         title: Observer(builder: (_) {
           return Text(
-            widget.applicationModel.commonModel.lng['new_category'],
-            style: TextStyle(
-                color: Colors.black,
-                fontSize: SizeConfig.blockSizeVertical * 2.5),
+            widget.isEditing ? 'Edit Card' : 'New Card' ,
+            style:  Theme.of(context)
+                 .textTheme
+                  .subhead,
           );
         }),
         centerTitle: true,
         elevation: 0,
-        iconTheme: IconThemeData(color: Colors.black26),
-        brightness: Brightness.light,
-        backgroundColor: Colors.white,
+         brightness:Theme.of(context).brightness ,
+        backgroundColor: Colors.transparent,
       ),
       body: Container(
         constraints: BoxConstraints.expand(),
@@ -91,10 +92,10 @@ class _AddCardScreenState extends State<AddCardScreen> {
             Observer(builder: (_) {
               return Text(
                 widget.applicationModel.commonModel.lng['add_category_desc'],
-                style: TextStyle(
-                    color: Colors.black38,
-                    fontWeight: FontWeight.w600,
-                    fontSize: SizeConfig.blockSizeVertical * 2.3),
+                style: CustomTheme.of(context).textTheme.body1.copyWith(
+                fontWeight: FontWeight.w600,
+                  fontSize:  SizeConfig.blockSizeVertical * 2.1
+              ),
               );
             }),
             Container(
@@ -116,7 +117,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
                       color: Colors.black26,
                     )),
                 style: TextStyle(
-                    color: Colors.black54,
+                   // color: Colors.black54,
                     fontWeight: FontWeight.w500,
                     fontSize: SizeConfig.blockSizeVertical * 4),
               );
@@ -148,7 +149,7 @@ class _AddCardScreenState extends State<AddCardScreen> {
           return FloatingActionButton.extended(
             heroTag: 'fab_new_card',
             icon: Icon(Icons.save),
-            backgroundColor: isProcessing?Colors.grey: taskColor,
+          //  backgroundColor: isProcessing?Colors.grey: taskColor,
             label: Observer(builder: (_) {
               return Text(widget.applicationModel.commonModel
                   .lng[widget.isEditing ? 'submit' : 'add_category']);

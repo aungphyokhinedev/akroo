@@ -63,6 +63,7 @@ class _AccountCardScreenState extends State<AccountCardScreen>
         //  A Scaffold is generally used but you are free to use other widgets
         // Note: use "automaticallyImplyLeading: false" if you do not personalize "leading" of Bar
         scaffold: Scaffold(
+         
           body: AccountDetailScreen(
               category: widget.category,
               applicationModel: widget.applicationModel,
@@ -99,14 +100,7 @@ class LeftMenu extends StatelessWidget {
     return new Scaffold(
     
         body: Container(
-          decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Colors.blueGrey[200], Colors.blueGrey],
-            tileMode: TileMode.repeated,
-          ),
-        ),
+       //  color:Color(0xff1c1c1e),
             padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 0.0),
             child:
              Observer(builder: (context) {
@@ -125,23 +119,19 @@ class LeftMenu extends StatelessWidget {
             
                 Text(
                       applicationModel.commonModel.lng['set_new_monthly'],
-                    style: TextStyle(
-                    //  fontSize: 18.0,
-                    height: 1.1,
-                      color: Colors.white,
-                     // fontWeight: FontWeight.w600,
-                    ),
+                    style:  Theme.of(
+                                                                          context)
+                                                                      .textTheme
+                                                                      .subhead,
                   ),
                    Text(
                      applicationModel.accountModel.category.accountCategory.monthlyLimit > 0 ?
                    applicationModel.commonModel.lng['current_limit'] + ' ' + _nf.format(applicationModel.accountModel.category.accountCategory.monthlyLimit) :
                    'No limit currently, set new one.',
-                    style: TextStyle(
-                      fontSize: 13.0,
-                    height: 1.3,
-                      color: Colors.white,
-                    //  fontWeight: FontWeight.w600,
-                    ),
+                    style:  Theme.of(
+                                                                          context)
+                                                                      .textTheme
+                                                                      .body1,
                   ),
                   ],)
                    ,
@@ -181,23 +171,19 @@ class LeftMenu extends StatelessWidget {
           
                    Text(
                      applicationModel.commonModel.lng['set_new_daily'],
-                    style: TextStyle(
-                    //  fontSize: 18.0,
-                    height: 1.1,
-                      color: Colors.white,
-                    //  fontWeight: FontWeight.w600,
-                    ),
+                    style:  Theme.of(
+                                                                          context)
+                                                                      .textTheme
+                                                                      .subhead,
                   ),
                   Text(
                     applicationModel.accountModel.category.accountCategory.dailyLimit > 0 ?
                     applicationModel.commonModel.lng['current_limit'] + ' ' + _nf.format(applicationModel.accountModel.category.accountCategory.dailyLimit):
                     'No limit currently, set new one.' ,
-                    style: TextStyle(
-                      fontSize: 13.0,
-                    height: 1.3,
-                      color: Colors.white,
-                   //   fontWeight: FontWeight.w600,
-                    ),
+                    style:  Theme.of(
+                                                                          context)
+                                                                      .textTheme
+                                                                      .body1,
                   ),
                     ]),
                     onTap: () {
@@ -227,11 +213,10 @@ class LeftMenu extends StatelessWidget {
                 ),
                 ListTile(
                   title:Text('Edit Card',
-                  style: TextStyle(
-                    height: 1.1,
-                      color: Colors.white,
-                   //   fontWeight: FontWeight.w600,
-                    ),),
+                  style:  Theme.of(
+                                                                          context)
+                                                                      .textTheme
+                                                                      .subhead,),
                   
                   onTap: () {
                       Navigator.push(
@@ -245,11 +230,10 @@ class LeftMenu extends StatelessWidget {
                 ListTile(
                   title: Text(
                     _lng['delete_card'],
-                    style: TextStyle(
-                     // fontSize: 18.0,
-                      color: Colors.white,
-                     // fontWeight: FontWeight.w600,
-                    ),
+                    style:  Theme.of(
+                                                                          context)
+                                                                      .textTheme
+                                                                      .subhead,
                   ),
                   onTap: () {
                   
@@ -265,7 +249,10 @@ class LeftMenu extends StatelessWidget {
                               children: <Widget>[
                                 Text(
                                     'This is a one way street! Deleting this will remove all the transactions assigned in this card.',
-                                    style:TextStyle(height:1,fontSize: 13 )),
+                                    style: Theme.of(
+                                                                          context)
+                                                                      .textTheme
+                                                                      .body1),
                               ],
                             ),
                           ),

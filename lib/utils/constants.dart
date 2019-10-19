@@ -7,6 +7,7 @@ class Constants {
     return 'https://hacker-news.firebaseio.com/v0/item/$newsId.json';
   }
 
+  static  final String version = 'v1.2.0';
   static  final int defaultFiltertype = 1;
 
   static final int timestampOptionDay = 0;

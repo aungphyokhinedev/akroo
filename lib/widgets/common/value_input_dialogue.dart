@@ -35,7 +35,10 @@ return AlertDialog(
                   children: <Widget>[
                     Text(
                         widget.message,
-                        style:TextStyle(height:1.3,fontSize: 13 )),
+                        style: Theme.of(
+                                                                          context)
+                                                                      .textTheme
+                                                                      .body1),
                         Container(
                   height: 16.0,
                 ),
@@ -53,7 +56,7 @@ return AlertDialog(
                         color: Colors.black26,
                       )),
                   style: TextStyle(
-                      color: Colors.black54,
+                    //  color: Colors.black54,
                       fontWeight: FontWeight.w500,
                       fontSize: 36.0),
                 ),

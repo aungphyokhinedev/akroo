@@ -59,12 +59,17 @@ class _HeaderState extends State<Header> with TickerProviderStateMixin {
           children: <Widget>[
             _Icon(),
              Observer(builder: (context) {
+
+         
+          double size = _applicationModel.loginModel.isLoggedIn?
+          SizeConfig.blockSizeVertical *2.3: SizeConfig.blockSizeVertical * 2.5;
+
            return Text(
-                      "twet chat",
+                      'TWET CHAT',
                       style: TextStyle(
-                          fontSize: SizeConfig.blockSizeVertical *3.5,
+                          fontSize:size,
                           height: 1,
-                          fontWeight: FontWeight.w300,
+                         // fontWeight: FontWeight.w300,
                           color: Colors.white),
                     );}),
             SizedBox(height: SizeConfig.blockSizeVertical * 2.0),
@@ -251,6 +256,7 @@ class __ButtonState extends State<_Button> with TickerProviderStateMixin {
       opacity: _animation,
       child: Center(
         child: RaisedButton(
+          color: Colors.white70,
           padding: EdgeInsets.symmetric(vertical: 14.0, horizontal: 32.0),
           onPressed: () async {
             bool _loggedIn = await _applicationModel.loginModel.checkLogin();
@@ -279,7 +285,7 @@ class __ButtonState extends State<_Button> with TickerProviderStateMixin {
           },
           child: Text(
             "FACEBOOK LOGIN",
-            style: TextStyle(fontWeight: FontWeight.bold),
+            style: TextStyle(fontWeight: FontWeight.bold, color: Colors.black87),
           ),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(99.9),

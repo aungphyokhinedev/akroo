@@ -1,4 +1,5 @@
 import 'package:essential/store/price_list_model.dart';
+import 'package:essential/utils/CustomThemes.dart';
 import 'package:essential/utils/buildin_transformers.dart';
 import 'package:essential/widgets/calculator/home.dart';
 import 'package:essential/widgets/date_picker/calendar_date_picker.dart';
@@ -22,42 +23,28 @@ class _CalculatorPageState extends State<CalculatorPage> {
     final _applicationModel =
         InheritedDataProvider.of(context).applicationModel;
 
-    return Stack(alignment: Alignment.topCenter, children: <Widget>[
-   GradientBackground(color: Colors.blueGrey[600]) ,
-      SafeArea(
-        
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  ClipRRect(
-                    borderRadius: BorderRadius.all(Radius.circular(32.0)),
-                    child: Material(
-                      shadowColor: Colors.transparent,
-                      color: Colors.transparent,
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.arrow_back_ios,
-                          color: Colors.white70,
-                        ),
-                        onPressed: widget.onMenuPressed,
-                      ),
-                    ),
-                  ),
-                  SizedBox(),
-                  SizedBox(),
-                 
-                ],
-              ),
-                Expanded(
-                child: 
-              Calculator())
-              ]
-              )
-              
-      )
-    ]);
+    return Scaffold(
+        appBar: AppBar(
+          leading: new IconButton(
+            padding: EdgeInsets.only(left: 0),
+            icon: new Icon(
+              Icons.arrow_back_ios,
+            ),
+            onPressed: () =>  widget.onMenuPressed(),
+          ),
+          elevation: 0,
+          iconTheme: CustomTheme.of(context).iconTheme,
+            brightness: CustomTheme.of(context).brightness,
+          backgroundColor: Colors.transparent,
+          actions: [
+            
+          ],
+        ),
+        body:
+    
+    Stack(alignment: Alignment.topCenter, children: <Widget>[
+  // GradientBackground(color: Colors.blueGrey[600]) ,
+     Calculator()
+    ]));
   }
 }

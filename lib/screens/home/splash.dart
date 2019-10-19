@@ -1,3 +1,5 @@
+import 'package:essential/utils/CustomThemes.dart';
+import 'package:essential/utils/MyThemes.dart';
 import 'package:essential/utils/constants.dart';
 import 'package:essential/utils/size_config.dart';
 import 'package:essential/widgets/inheriteddataprovider.dart';
@@ -23,12 +25,16 @@ class Splash extends StatelessWidget {
     final _applicationModel = InheritedDataProvider.of(context).applicationModel;
      SizeConfig().init(context);
 
+  
     new Future.delayed(const Duration(milliseconds: 1000), (){
-      _applicationModel.commonModel.initData();
+      
+
+_applicationModel.commonModel.initData();
     });
    
      
     return  Observer(builder: (_)  {
+      
             if(_applicationModel.commonModel.isOnBoarded == null){
               return
               Container(

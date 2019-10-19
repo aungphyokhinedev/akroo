@@ -1,3 +1,5 @@
+import 'package:essential/store/common_model.dart';
+import 'package:essential/widgets/inheriteddataprovider.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
@@ -24,7 +26,7 @@ class CustomTheme extends StatefulWidget {
   final MyThemeKeys initialThemeKey;
 
   const CustomTheme({
-    Key key,
+    Key key,  
     this.initialThemeKey,
     @required this.child,
   }) : super(key: key);
@@ -51,8 +53,18 @@ class CustomThemeState extends State<CustomTheme> {
   ThemeData get theme => _theme;
 
   @override
-  void initState() {
-    _theme = MyThemes.getThemeFromKey(widget.initialThemeKey);
+  void initState(){
+    CommonModel commonModel = new CommonModel();
+    commonModel.initTheme().then((onValue){
+       var _themestr =  commonModel.currentTheme;
+      var _key = MyThemes.themes[_themestr];
+      setState(() {
+      _theme = MyThemes.getThemeFromKey(_key);
+    });
+
+    });
+   
+   //  _theme = MyThemes.getThemeFromKey(widget.initialThemeKey);
     super.initState();
   }
 
@@ -66,6 +78,9 @@ class CustomThemeState extends State<CustomTheme> {
 
   @override
   Widget build(BuildContext context) {
+
+
+
     return new _CustomTheme(
       data: this,
       child: widget.child,

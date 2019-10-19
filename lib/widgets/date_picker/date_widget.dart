@@ -41,7 +41,7 @@ class DateWidget extends StatelessWidget {
         margin: EdgeInsets.all(3.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(_padH)),
-          color: selectionColor,
+         // color: selectionColor,
         ),
         child: Padding(
           padding:  EdgeInsets.only(top: _padH, bottom: _padH, left: _padW, right: _padW),
@@ -58,7 +58,7 @@ class DateWidget extends StatelessWidget {
                   )),
               Text(date.day.toString(), // Date
                   style: TextStyle(
-                    color: dateColor,
+                    color: selectionColor,
                     fontSize: dateSize,
                  //   fontFamily: 'Roboto',
                    fontWeight: FontWeight.w500,

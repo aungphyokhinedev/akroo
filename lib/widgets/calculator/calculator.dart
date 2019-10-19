@@ -24,11 +24,11 @@ import '../inheriteddataprovider.dart';
 String strInput = "";
 
 class CalculatorWidget extends StatefulWidget {
-  final Color backColor;
-  final Color textColor;
-  final Color buttonColor;
+  final Color numberColor;
+  final Color numberHightlightColor;
+  final Color calculatenumberColor;
 
-  CalculatorWidget(this.backColor, this.buttonColor, this.textColor);
+  CalculatorWidget(this.numberColor, this.numberHightlightColor, this.calculatenumberColor);
   @override
   State createState() => new CalculatorWidgetState();
 }
@@ -75,6 +75,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
         context: context,
         builder: (context) {
           return CupertinoAlertDialog(
+            
             title: Text('Edit Dialog'),
             content: ConstrainedBox(
               constraints: new BoxConstraints(
@@ -146,7 +147,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
       children: <Widget>[
         new FlatButton(
             padding: EdgeInsets.all(_buttonSize),
-            child: Icon(Icons.save_alt, color: Colors.lime),
+            child: Icon(Icons.save_alt, color: Colors.red),
             onPressed: () async {
               if (!_applicationModel.loginModel.isLoggedIn) {
                 final snackBar = SnackBar(
@@ -240,7 +241,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
           child: Text("AC",
               style: TextStyle(
                   fontSize: SizeConfig.blockSizeVertical * 2,
-                  color: Colors.lime,
+            //      color: Colors.red,
                   fontWeight: FontWeight.w300)),
           onPressed: () {
             _applicationModel.calculateModel.removeAll();
@@ -248,7 +249,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
         ),
         new FlatButton(
           padding: EdgeInsets.all(_buttonSize),
-          child: Icon(Icons.history, color: Colors.lime),
+          child: Icon(Icons.history, color: Colors.red),
           onPressed: () => setState(() {
             if (!_applicationModel.loginModel.isLoggedIn) {
               final snackBar =
@@ -271,7 +272,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
         new Container(
             // width: _opButtonSize,
             child: Container()),
-        //  new FlatButton(padding: EdgeInsets.all(_buttonSize),child: Text("/", style: TextStyle(fontSize: _textSize, color: widget.textColor, fontWeight: FontWeight.w300)),color: widget.buttonColor,onPressed:()=>setState(() {textControllerInput.text = textControllerInput.text + "/";}),),
+        //  new FlatButton(padding: EdgeInsets.all(_buttonSize),child: Text("/", style: TextStyle(fontSize: _textSize, color: widget.numberColor, fontWeight: FontWeight.w300)),color: widget.buttonColor,onPressed:()=>setState(() {textControllerInput.text = textControllerInput.text + "/";}),),
       ],
     );
   }
@@ -286,7 +287,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
           child: Text("(",
               style: TextStyle(
                   fontSize: _textSize,
-                  color: widget.textColor,
+                  color: widget.numberColor,
                   fontWeight: FontWeight.w300)),
           onPressed: () => setState(() {
             textControllerInput.text = textControllerInput.text + "(";
@@ -297,7 +298,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
           child: Text(")",
               style: TextStyle(
                   fontSize: _textSize,
-                  color: widget.textColor,
+                  color: widget.numberColor,
                   fontWeight: FontWeight.w300)),
           onPressed: () => setState(() {
             textControllerInput.text = textControllerInput.text + ")";
@@ -308,7 +309,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
           child: Text("^",
               style: TextStyle(
                 fontSize: _textSize,
-                color: Colors.white,
+                color:  widget.numberColor,
                 // fontWeight: FontWeight.w300
               )),
           onPressed: () => setState(() {
@@ -321,14 +322,14 @@ class CalculatorWidgetState extends State<CalculatorWidget>
           padding: EdgeInsets.all(_buttonSize),
           child: Icon(
             MyFlutterApp.divide,
-            color: Colors.white,
+            color:  widget.numberColor,
             size: SizeConfig.blockSizeVertical * 2.1,
           ),
           onPressed: () => setState(() {
             textControllerInput.text = textControllerInput.text + "/";
           }),
         )),
-        //  new FlatButton(padding: EdgeInsets.all(_buttonSize),child: Text("/", style: TextStyle(fontSize: _textSize, color: widget.textColor, fontWeight: FontWeight.w300)),color: widget.buttonColor,onPressed:()=>setState(() {textControllerInput.text = textControllerInput.text + "/";}),),
+        //  new FlatButton(padding: EdgeInsets.all(_buttonSize),child: Text("/", style: TextStyle(fontSize: _textSize, color: widget.numberColor, fontWeight: FontWeight.w300)),color: widget.buttonColor,onPressed:()=>setState(() {textControllerInput.text = textControllerInput.text + "/";}),),
       ],
     );
   }
@@ -343,7 +344,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
           child: Text("7",
               style: TextStyle(
                   fontSize: _textSize,
-                  color: widget.textColor,
+                  color: widget.numberColor,
                   fontWeight: FontWeight.w300)),
           onPressed: () => setState(() {
             textControllerInput.text = textControllerInput.text + "7";
@@ -354,7 +355,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
           child: Text("8",
               style: TextStyle(
                   fontSize: _textSize,
-                  color: widget.textColor,
+                  color: widget.numberColor,
                   fontWeight: FontWeight.w300)),
           onPressed: () => setState(() {
             textControllerInput.text = textControllerInput.text + "8";
@@ -365,7 +366,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
           child: Text("9",
               style: TextStyle(
                   fontSize: _textSize,
-                  color: widget.textColor,
+                  color: widget.numberColor,
                   fontWeight: FontWeight.w300)),
           onPressed: () => setState(() {
             textControllerInput.text = textControllerInput.text + "9";
@@ -377,14 +378,14 @@ class CalculatorWidgetState extends State<CalculatorWidget>
           padding: EdgeInsets.all(_buttonSize),
           child: Icon(
             MyFlutterApp.cancel,
-            color: Colors.white,
+            color:  widget.numberColor,
             size: SizeConfig.blockSizeVertical * 2.1,
           ),
           onPressed: () => setState(() {
             textControllerInput.text = textControllerInput.text + "*";
           }),
         )),
-        //  new FlatButton(padding: EdgeInsets.all(_buttonSize),child: Text("/", style: TextStyle(fontSize: _textSize, color: widget.textColor, fontWeight: FontWeight.w300)),color: widget.buttonColor,onPressed:()=>setState(() {textControllerInput.text = textControllerInput.text + "/";}),),
+        //  new FlatButton(padding: EdgeInsets.all(_buttonSize),child: Text("/", style: TextStyle(fontSize: _textSize, color: widget.numberColor, fontWeight: FontWeight.w300)),color: widget.buttonColor,onPressed:()=>setState(() {textControllerInput.text = textControllerInput.text + "/";}),),
       ],
     );
   }
@@ -399,7 +400,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
           child: Text("4",
               style: TextStyle(
                   fontSize: _textSize,
-                  color: widget.textColor,
+                  color: widget.numberColor,
                   fontWeight: FontWeight.w300)),
           onPressed: () => setState(() {
             textControllerInput.text = textControllerInput.text + "4";
@@ -410,7 +411,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
           child: Text("5",
               style: TextStyle(
                   fontSize: _textSize,
-                  color: widget.textColor,
+                  color: widget.numberColor,
                   fontWeight: FontWeight.w300)),
           onPressed: () => setState(() {
             textControllerInput.text = textControllerInput.text + "5";
@@ -421,7 +422,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
           child: Text("6",
               style: TextStyle(
                   fontSize: _textSize,
-                  color: widget.textColor,
+                  color: widget.numberColor,
                   fontWeight: FontWeight.w300)),
           onPressed: () => setState(() {
             textControllerInput.text = textControllerInput.text + "6";
@@ -433,14 +434,14 @@ class CalculatorWidgetState extends State<CalculatorWidget>
           padding: EdgeInsets.all(_buttonSize),
           child: Icon(
             MyFlutterApp.minus,
-            color: Colors.white,
+            color:  widget.numberColor,
             size: SizeConfig.blockSizeVertical * 2.1,
           ),
           onPressed: () => setState(() {
             textControllerInput.text = textControllerInput.text + "-";
           }),
         )),
-        //  new FlatButton(padding: EdgeInsets.all(_buttonSize),child: Text("x", style: TextStyle(fontSize: _textSize, color: widget.textColor, fontWeight: FontWeight.w300)),color: widget.buttonColor,onPressed:()=>setState(() {textControllerInput.text = textControllerInput.text + "*";}),),
+        //  new FlatButton(padding: EdgeInsets.all(_buttonSize),child: Text("x", style: TextStyle(fontSize: _textSize, color: widget.numberColor, fontWeight: FontWeight.w300)),color: widget.buttonColor,onPressed:()=>setState(() {textControllerInput.text = textControllerInput.text + "*";}),),
       ],
     );
   }
@@ -455,7 +456,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
           child: Text("1",
               style: TextStyle(
                   fontSize: _textSize,
-                  color: widget.textColor,
+                  color: widget.numberColor,
                   fontWeight: FontWeight.w300)),
           onPressed: () => setState(() {
             textControllerInput.text = textControllerInput.text + "1";
@@ -466,7 +467,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
           child: Text("2",
               style: TextStyle(
                   fontSize: _textSize,
-                  color: widget.textColor,
+                  color: widget.numberColor,
                   fontWeight: FontWeight.w300)),
           onPressed: () => setState(() {
             textControllerInput.text = textControllerInput.text + "2";
@@ -477,7 +478,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
           child: Text("3",
               style: TextStyle(
                   fontSize: _textSize,
-                  color: widget.textColor,
+                  color: widget.numberColor,
                   fontWeight: FontWeight.w300)),
           onPressed: () => setState(() {
             textControllerInput.text = textControllerInput.text + "3";
@@ -489,14 +490,14 @@ class CalculatorWidgetState extends State<CalculatorWidget>
           padding: EdgeInsets.all(_buttonSize),
           child: Icon(
             MyFlutterApp.plus,
-            color: Colors.white,
+            color:   widget.numberColor,
             size: SizeConfig.blockSizeVertical * 2.1,
           ),
           onPressed: () => setState(() {
             textControllerInput.text = textControllerInput.text + "+";
           }),
         )),
-        //  new FlatButton(padding: EdgeInsets.all(_buttonSize),child: Text("-", style: TextStyle(fontSize: _textSize, color: widget.textColor, fontWeight: FontWeight.w300)),color: widget.buttonColor,onPressed:()=>setState(() {textControllerInput.text = textControllerInput.text + "-";}),),
+        //  new FlatButton(padding: EdgeInsets.all(_buttonSize),child: Text("-", style: TextStyle(fontSize: _textSize, color: widget.numberColor, fontWeight: FontWeight.w300)),color: widget.buttonColor,onPressed:()=>setState(() {textControllerInput.text = textControllerInput.text + "-";}),),
       ],
     );
   }
@@ -511,7 +512,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
           child: Text(".",
               style: TextStyle(
                   fontSize: _textSize,
-                  color: widget.textColor,
+                  color: widget.numberColor,
                   fontWeight: FontWeight.w300)),
           onPressed: () => setState(() {
             textControllerInput.text = textControllerInput.text + ".";
@@ -522,7 +523,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
           child: Text("0",
               style: TextStyle(
                   fontSize: _textSize,
-                  color: widget.textColor,
+                  color: widget.numberColor,
                   fontWeight: FontWeight.w300)),
           onPressed: () => setState(() {
             textControllerInput.text = textControllerInput.text + "0";
@@ -531,7 +532,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
         new FlatButton(
           padding: EdgeInsets.all(_buttonSize),
           child: Icon(IconData(58842, fontFamily: 'MaterialIcons'),
-              color: Colors.white),
+              color:  widget.numberColor),
           onPressed: () {
             setExpItem();
           },
@@ -540,7 +541,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
             //          width: _opButtonSize,
             child: FlatButton(
           padding: EdgeInsets.all(_buttonSize),
-          child: Icon(Icons.backspace, size: _textSize, color: Colors.lime),
+          child: Icon(Icons.backspace, size: _textSize, color: Colors.red),
           onPressed: () {
             textControllerInput.text = (textControllerInput.text.length > 0)
                 ? (textControllerInput.text
@@ -548,49 +549,12 @@ class CalculatorWidgetState extends State<CalculatorWidget>
                 : "";
           },
         ))
-        //  new FlatButton(padding: EdgeInsets.all(_buttonSize),child: Text("+", style: TextStyle(fontSize: _textSize, color: widget.textColor, fontWeight: FontWeight.w300)),color: widget.buttonColor,onPressed:()=>setState(() {textControllerInput.text = textControllerInput.text + "+";}),)
+        //  new FlatButton(padding: EdgeInsets.all(_buttonSize),child: Text("+", style: TextStyle(fontSize: _textSize, color: widget.numberColor, fontWeight: FontWeight.w300)),color: widget.buttonColor,onPressed:()=>setState(() {textControllerInput.text = textControllerInput.text + "+";}),)
       ],
     );
   }
 
-  //This is the second Row of keys
-  Row buttonsRow5Container() {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      children: <Widget>[
-        new FlatButton(
-          padding: EdgeInsets.all(_buttonSize),
-          child: Icon(Icons.save, color: Colors.white54),
-          onPressed: () => setState(() {
-            textControllerInput.text = textControllerInput.text + ".";
-          }),
-        ),
-        new FlatButton(
-          padding: EdgeInsets.all(_buttonSize),
-          child: Icon(Icons.list, color: Colors.white54),
-          onPressed: () => setState(() {
-            textControllerInput.text = textControllerInput.text + "0";
-          }),
-        ),
-        new FlatButton(
-          padding: EdgeInsets.all(_buttonSize),
-          child: Icon(
-            Icons.search,
-            color: Colors.white54,
-          ),
-          onPressed: () {
-            textControllerInput.text = (textControllerInput.text.length > 0)
-                ? (textControllerInput.text
-                    .substring(0, textControllerInput.text.length - 1))
-                : "";
-          },
-        ),
-        Container(),
-
-        //  new FlatButton(padding: EdgeInsets.all(_buttonSize),child: Text("+", style: TextStyle(fontSize: _textSize, color: widget.textColor, fontWeight: FontWeight.w300)),color: widget.buttonColor,onPressed:()=>setState(() {textControllerInput.text = textControllerInput.text + "+";}),)
-      ],
-    );
-  }
+  
 
   String _prepareExp() {
     setExpItem();
@@ -669,7 +633,8 @@ class CalculatorWidgetState extends State<CalculatorWidget>
                 height: SizeConfig.blockSizeVertical * 1.5,
               ),
               RaisedButton(
-                color: Colors.orange,
+                color: Colors.transparent,
+                elevation: 0,
                 padding: EdgeInsets.symmetric(
                     vertical: SizeConfig.blockSizeVertical * 1.5,
                     horizontal: SizeConfig.blockSizeVertical * 3),
@@ -684,7 +649,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
                 child: Text('CALCULATE',
                     style: TextStyle(
                         fontSize: SizeConfig.blockSizeVertical * 2,
-                        color: Colors.white)),
+                        color:  widget.numberColor)),
               ),
               // _keyboradExpend?
               // buttonsRow5Container():Container(height:SizeConfig.blockSizeVertical * 3)
@@ -737,11 +702,13 @@ class CalculatorWidgetState extends State<CalculatorWidget>
       textControllerResult.text =
           _calculateResult(_sExp + textControllerInput.text);
       return Container(
+       
           child: Padding(
               padding:
                   EdgeInsets.only(bottom: SizeConfig.blockSizeVertical * 3),
-              //  color: widget.backColor,
+             
               child: Stack(
+                
                 children: <Widget>[
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -752,7 +719,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
                               style: TextStyle(
                                   fontSize: SizeConfig.blockSizeVertical * 2.2,
                                   fontWeight: FontWeight.w300,
-                                  color: Colors.white))
+                                  color:  widget.numberColor))
                           : Container(),
                       new AnimatedSize(
                         vsync: this,
@@ -782,7 +749,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
                                       if (_item.type ==
                                           CalculateData.TYPE_BREAK) {
                                         return Container(
-                                          color: Colors.white10,
+                                          color:  widget.numberColor,
                                           height:
                                               SizeConfig.blockSizeVertical * .1,
                                         );
@@ -807,7 +774,8 @@ class CalculatorWidgetState extends State<CalculatorWidget>
                                           child: Column(
                                             children: <Widget>[
                                               Container(
-                                                color: Colors.white10,
+                                               
+                                               // color:  Colors.black12,
                                                 child: Padding(
                                                   padding: EdgeInsets.symmetric(
                                                       vertical: SizeConfig
@@ -816,7 +784,9 @@ class CalculatorWidgetState extends State<CalculatorWidget>
                                                       horizontal: SizeConfig
                                                               .blockSizeVertical *
                                                           1),
-                                                  child: Row(
+                                                  child:
+                                                  
+                                                   Row(
                                                     mainAxisAlignment:
                                                         MainAxisAlignment
                                                             .spaceBetween,
@@ -825,23 +795,22 @@ class CalculatorWidgetState extends State<CalculatorWidget>
                                                           style: TextStyle(
                                                               fontSize: SizeConfig
                                                                       .blockSizeVertical *
-                                                                  2.2,
+                                                                  2,
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .w300,
-                                                              color: Colors
-                                                                  .white)),
+                                                                      .w400,
+                                                              color: Colors.red)),
                                                       Text(
                                                           '${_item.expression}',
                                                           style: TextStyle(
                                                               fontSize: SizeConfig
                                                                       .blockSizeVertical *
-                                                                  2.2,
+                                                                  2,
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .w300,
+                                                                      .w400,
                                                               color:
-                                                                  Colors.white))
+                                                                   Colors.red))
                                                     ],
                                                   ),
                                                 ),
@@ -886,20 +855,20 @@ class CalculatorWidgetState extends State<CalculatorWidget>
                                                         style: TextStyle(
                                                             fontSize: SizeConfig
                                                                     .blockSizeVertical *
-                                                                2.2,
+                                                                2,
                                                             fontWeight:
                                                                 FontWeight.w300,
                                                             color:
-                                                                Colors.white)),
+                                                                 widget.numberColor)),
                                                     Text('${_item.expression}',
                                                         style: TextStyle(
                                                             fontSize: SizeConfig
                                                                     .blockSizeVertical *
-                                                                2.2,
+                                                                2,
                                                             fontWeight:
                                                                 FontWeight.w300,
                                                             color:
-                                                                Colors.white))
+                                                                 widget.numberColor))
                                                   ],
                                                 ),
                                               )));
@@ -956,15 +925,15 @@ class CalculatorWidgetState extends State<CalculatorWidget>
                                       child: new TextField(
                                         decoration:
                                             new InputDecoration.collapsed(
-                                                hintText: "Start Calculating",
+                                                hintText: "waiting input",
                                                 hintStyle: TextStyle(
-                                                    color: Colors.white24)),
+                                                    color:  widget.numberColor)),
                                         style: TextStyle(
                                             fontSize:
                                                 SizeConfig.blockSizeVertical *
                                                     2.5,
                                             fontWeight: FontWeight.w300,
-                                            color: Colors.white),
+                                            color:  widget.numberColor),
                                         textAlign: TextAlign.right,
                                         controller: textControllerInput,
                                         onTap: () => FocusScope.of(context)
@@ -979,9 +948,9 @@ class CalculatorWidgetState extends State<CalculatorWidget>
                                         decoration:
                                             new InputDecoration.collapsed(
                                           hintText: "Result",
-                                          fillColor: Colors.white,
+                                          fillColor:  widget.numberColor,
                                           hintStyle:
-                                              TextStyle(color: Colors.white24),
+                                              TextStyle(color:  widget.numberColor),
                                         ),
                                         textInputAction: TextInputAction.none,
                                         keyboardType: TextInputType.number,
@@ -990,7 +959,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
                                                 SizeConfig.blockSizeVertical *
                                                     3.5,
                                             fontWeight: FontWeight.w300,
-                                            color: Colors.white),
+                                            color:  widget.numberColor),
                                         textAlign: TextAlign.right,
                                         controller: textControllerResult,
                                         onTap: () {
@@ -1003,7 +972,7 @@ class CalculatorWidgetState extends State<CalculatorWidget>
                             gravity: ToastGravity.CENTER,
                             timeInSecForIos: 1,
                             backgroundColor: Colors.blueAccent,
-                            textColor: Colors.white,
+                            numberColor:  widget.numberColor,
                             fontSize: 16.0
                         );
                       });*/

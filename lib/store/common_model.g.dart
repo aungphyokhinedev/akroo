@@ -43,6 +43,23 @@ mixin _$CommonModel on CommonModelBase, Store {
     }, _$currentLngAtom, name: '${_$currentLngAtom.name}_set');
   }
 
+  final _$currentThemeAtom = Atom(name: 'CommonModelBase.currentTheme');
+
+  @override
+  String get currentTheme {
+    _$currentThemeAtom.context.enforceReadPolicy(_$currentThemeAtom);
+    _$currentThemeAtom.reportObserved();
+    return super.currentTheme;
+  }
+
+  @override
+  set currentTheme(String value) {
+    _$currentThemeAtom.context.conditionallyRunInAction(() {
+      super.currentTheme = value;
+      _$currentThemeAtom.reportChanged();
+    }, _$currentThemeAtom, name: '${_$currentThemeAtom.name}_set');
+  }
+
   final _$scrollPositionAtom = Atom(name: 'CommonModelBase.scrollPosition');
 
   @override
@@ -174,6 +191,20 @@ mixin _$CommonModel on CommonModelBase, Store {
   @override
   Future<void> setLng(String value) {
     return _$setLngAsyncAction.run(() => super.setLng(value));
+  }
+
+  final _$initThemeAsyncAction = AsyncAction('initTheme');
+
+  @override
+  Future<void> initTheme() {
+    return _$initThemeAsyncAction.run(() => super.initTheme());
+  }
+
+  final _$setThemeAsyncAction = AsyncAction('setTheme');
+
+  @override
+  Future<void> setTheme(String value) {
+    return _$setThemeAsyncAction.run(() => super.setTheme(value));
   }
 
   final _$setOnboardingAsyncAction = AsyncAction('setOnboarding');

@@ -7,7 +7,6 @@ import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intro_views_flutter/Models/page_view_model.dart';
 import 'package:intro_views_flutter/intro_views_flutter.dart';
 
-import 'home.dart';
 
 class OnBoardingScreen extends StatefulWidget {
   final ApplicationModel applicationModel;
@@ -34,7 +33,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen>{
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: 'Twat Chat', //title of app
+      title: 'Twet Chat', //title of app
       color: Colors.blueGrey,
       theme: ThemeData(
         primarySwatch: Colors.blue,

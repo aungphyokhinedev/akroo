@@ -2,6 +2,8 @@
 import 'package:essential/screens/common/class_builder.dart';
 import 'package:essential/screens/calculator/calculator_page.dart';
 import 'package:essential/screens/home/prices_page.dart';
+import 'package:essential/utils/constants.dart';
+import 'package:essential/utils/size_config.dart';
 import 'package:essential/widgets/calculator/home.dart';
 import 'package:essential/widgets/inheriteddataprovider.dart';
 
@@ -76,12 +78,18 @@ class _HomePageState extends State<HomePage> {
             child:Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
+              Image.asset(
+                'assets/images/icon.png',
+                // height: 285.0,
+                  width:SizeConfig.blockSizeVertical * 7,
+                  alignment: Alignment.center,
+              ),
               Text(
-              "twet chat",
-                      style: TextStyle(fontSize: 30.0, color: Colors.white),
+              "TWET CHAT",
+                      style: TextStyle(fontSize: SizeConfig.blockSizeVertical * 2, color: Colors.white),
                     ),
-                Text("Time to save money.",
-                style: TextStyle(fontSize: 14.0, color: Colors.white),)    
+                Text(Constants.version,
+                style: TextStyle(fontSize: SizeConfig.blockSizeVertical * 1, color: Colors.white),)    
             ],) 
           ),
         ),
