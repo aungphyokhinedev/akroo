@@ -138,7 +138,7 @@ class __IconState extends State<_Icon> with TickerProviderStateMixin {
     final _applicationModel =
         InheritedDataProvider.of(context).applicationModel;
     _applicationModel.loginModel.isLoggedIn
-        ? _controller.reverse()
+        ? _controller.reverse() 
         : _controller.forward();
 
     _disposers
@@ -262,8 +262,11 @@ class __ButtonState extends State<_Button> with TickerProviderStateMixin {
             bool _loggedIn = await _applicationModel.loginModel.checkLogin();
             if (!_loggedIn) {
               final facebookLogin = FacebookLogin();
+             // await facebookLogin.logOut();
+ 
+
               final result =
-                  await facebookLogin.logInWithReadPermissions(['email']);
+                  await facebookLogin.logIn(['email']);
               switch (result.status) {
                 case FacebookLoginStatus.loggedIn:
                   {

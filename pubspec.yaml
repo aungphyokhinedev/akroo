@@ -23,7 +23,7 @@ dependencies:
   json_annotation: ^2.0.0
   flutter_circular_chart: ^0.1.0
   # https://pub.dev/packages/flutter_facebook_login#-readme-tab-
-  flutter_facebook_login: ^2.0.1
+  flutter_facebook_login: ^3.0.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
